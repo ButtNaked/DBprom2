@@ -19,7 +19,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void showNormText();
+    void showOutputText();
 
 private slots:
     void on_addAttrButton_clicked();

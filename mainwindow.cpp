@@ -18,46 +18,10 @@ MainWindow::~MainWindow()
     delete storage;
 }
 
-void MainWindow::showNormText()
+void MainWindow::showOutputText()
 {
     QString outText;
-    QVector<QVector<Matrix*>*>* graphs = storage->getGraphs();
-
-//    for (int i = 0; i < graphs->size(); ++i) {
-//        for (int j = 0; j < graphs->at(i)->size(); ++j) {
-//            int x = graphs->at(i)->at(j)->getX() - 1;
-//            int y = graphs->at(i)->at(j)->getY() - 1;
-//            outText += "Результирующие отношения:\n";
-
-//            outText += "{"
-//            for (int k = 0; k < total; ++k) {
-//                QString str1;
-//                str( *graphs->at(i)->at(j) )[][];
-//            }
-
-
-
-
-
-
-
-
-
-
-//        }
-//    }
-
-
-
-
-
-
-
-    outText="<u>123 </u>";
-
-    QTextDocument *doc = new QTextDocument(outText, this);
-    qDebug() << doc->toHtml();
-    ui->textEdit->setDocument(doc);
+    ui->textEdit->setHtml(storage->getOutputText(outText));
 }
 
 void MainWindow::on_addAttrButton_clicked()
@@ -75,7 +39,7 @@ void MainWindow::on_addConButton_clicked()
 void MainWindow::on_normButton_clicked()
 {
     storage->startNormalization();
-    this->showNormText();
+    this->showOutputText();
 
 }
 

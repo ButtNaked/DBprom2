@@ -26,6 +26,9 @@ public:
     QVector<QVector<QString> > *getAttrTable();
     QVector<QVector<Matrix *> *> *getGraphs();
     void startNormalization();
+    const QString &getOutputText(QString & rOutText) const;
+    int getNumberByText(const QString & rText) const;
+    QString getTextByNumber(int rNum) const;
 
 
 };

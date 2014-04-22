@@ -84,6 +84,19 @@ QVector<QVector<Matrix *> *> *Storage::getGraphs()
 
 void Storage::startNormalization()
 {
+    for (int i = 0; i < graphs->size(); ++i) {
+        QVector<Matrix *> *pTemp2;
+        for (int j = 0; j < graphs->at(i)->size(); ++j) {
+            Matrix *pTemp;
+            pTemp = graphs->at(i)->at(j);
+            delete pTemp;
+        }
+        pTemp2 = graphs->at(i);
+        delete pTemp2;
+    }
+
+    graphs->clear();
+
     equalMatrix();
 
     Normalization norm(matrix, graphs);
@@ -98,5 +111,88 @@ void Storage::startNormalization()
 
 
 }
+
+const QString &Storage::getOutputText(QString &rOutText) const
+{
+    rOutText="<h3 align= \"center\">Результирующие отношения</h3><br><br>";
+
+    for (int i = 0; i < graphs->size(); ++i) {
+        for (int j = 0; j < graphs->at(i)->size(); ++j) {
+            int x = graphs->at(i)->at(j)->getX();
+            int y = graphs->at(i)->at(j)->getY();
+            QString textHeader;
+            QString textKeys;
+            QString textElem;
+
+
+            for (int l = 1; l < y; ++l) {
+                int number = ( *graphs->at(i)->at(j) )[0][l];
+                textHeader += getTextByNumber(number);
+                if (l != y-1)
+                    textHeader += "_";
+            }
+
+            for (int l = 1; l < y; ++l) {
+                int number = ( *graphs->at(i)->at(j) )[0][l];
+                textKeys += getTextByNumber(number);
+                if (l != y-1)
+                    textKeys += ", ";
+            }
+
+            for (int k = 1; k < x; ++k) {
+
+                int number = ( *graphs->at(i)->at(j) )[k][0];
+                textElem += getTextByNumber(number);
+                if (k != x-1)
+                        textElem += ", ";
+            }
+
+            rOutText += QString("%1 { <u>%2</u>, %3 }<br>").arg(textHeader).arg(textKeys).arg(textElem);
+
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    return rOutText;
+}
+
+int Storage::getNumberByText(const QString &rText) const
+{
+
+    for (int i = 0; i < attrTable->size(); ++i) {
+        if ( (*attrTable)[i][1] == rText)
+            return (*attrTable)[i][0].toInt();
+    }
+
+    return -1;
+}
+
+QString Storage::getTextByNumber(int rNum) const
+{
+    QString tNum = QString::number(rNum);
+    for (int i = 0; i < attrTable->size(); ++i) {
+        if ( (*attrTable)[i][0] == tNum)
+            return (*attrTable)[i][1];
+    }
+    return "Error";
+
+}
+
+
+
 
 
