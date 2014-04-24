@@ -38,3 +38,10 @@ FORMS    += mainwindow.ui \
 
 
 CONFIG += c++11
+
+OTHER_FILES += \
+    pictures/key.bmp \
+    pictures/key.png
+
+RESOURCES += \
+    pictures/res.qrc

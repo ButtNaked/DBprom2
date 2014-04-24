@@ -53,7 +53,7 @@ void Iteration::preparing()
 
 	//Обрезка ключевых строк из mainM -> mainMcr
 	mainMcr_x=mainM_x-keyNodeCounter;
-	pMainMcr= new Matrix(mainMcr_x, mainM_y);   
+    pMainMcr= new Matrix(mainMcr_x, mainM_y);
 
 
 	//Копирование из mainM -> mainMcr с поправкой 
@@ -61,8 +61,8 @@ void Iteration::preparing()
 	//TODO:решить относительное содерж хедера или реальное
 	for (int j=0; j<mainM_y; j++)
 		(*pMainMcr)[0][j]=(*pMainM)[0][j];
-	for (int i=1, mod=0; i<mainM_x; i++)	{
-		if (i==(headerM[mod]+1))	{
+    for (int i=1, mod=0; i<mainM_x; i++)	{
+        if (i==(headerM[mod]+1) && mod < headerM_x)	{
 			mod++;
 		}
 		else    {

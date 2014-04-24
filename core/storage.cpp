@@ -1,6 +1,6 @@
 #include "core/storage.h"
 
-void Storage::equalMatrix()
+void Storage::createMatrix()
 {
     int size = vMatrix->size();
     matrix = new Matrix(size, size);
@@ -21,6 +21,19 @@ void Storage::equalMatrix()
 //            }
 //            qDebug() << str;
 //        }
+
+//    matrix = new Matrix(3, 3);
+//    int arr[3][3] = {
+//        {0,0,1},
+//        {0,0,0},
+//        {1,1,0},
+//    };
+
+//    for (int i = 0; i < 3; ++i) {
+//        for (int j = 0; j < 3; ++j) {
+//            (*matrix)[i][j] = arr[i][j];
+//        }
+//    }
 
 }
 
@@ -97,7 +110,7 @@ void Storage::startNormalization()
 
     graphs->clear();
 
-    equalMatrix();
+    createMatrix();
 
     Normalization norm(matrix, graphs);
 
@@ -114,7 +127,7 @@ void Storage::startNormalization()
 
 const QString &Storage::getOutputText(QString &rOutText) const
 {
-    rOutText="<h3 align= \"center\">Результирующие отношения</h3><br><br>";
+    rOutText="<h3 align= \"center\">Результирующие отношения:</h3><br>";
 
     for (int i = 0; i < graphs->size(); ++i) {
         for (int j = 0; j < graphs->at(i)->size(); ++j) {
@@ -154,19 +167,6 @@ const QString &Storage::getOutputText(QString &rOutText) const
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     return rOutText;
 }
 
@@ -190,6 +190,72 @@ QString Storage::getTextByNumber(int rNum) const
     }
     return "Error";
 
+}
+
+
+QList<QListWidget *> *Storage::getWidgetTableList() const
+{
+
+    QList<QListWidget *> *list = new QList<QListWidget *>;
+
+
+
+    //item1->setTextAlignment(Qt::AlignHCenter);
+
+
+
+    for (int i = 0; i < graphs->size(); ++i) {
+        for (int j = 0; j < graphs->at(i)->size(); ++j) {
+            int x = graphs->at(i)->at(j)->getX();
+            int y = graphs->at(i)->at(j)->getY();
+            QString textHeader = "Таблица: ";
+            QString textKeys;
+            QString textElem;
+            QListWidget *newTable = new QListWidget();
+            QListWidgetItem *newItem;
+            QIcon icon1(":/pic/key.bmp");
+
+            for (int l = 1; l < y; ++l) {
+                int number = ( *graphs->at(i)->at(j) )[0][l];
+                textHeader += getTextByNumber(number);
+                if (l != y-1)
+                    textHeader += "_";
+
+
+            }
+            newTable->setWindowTitle(textHeader);
+
+
+            for (int l = 1; l < y; ++l) {
+                int number = ( *graphs->at(i)->at(j) )[0][l];
+                textKeys = getTextByNumber(number);
+                newItem = new QListWidgetItem(textKeys);
+                newItem->setIcon(icon1);
+                newTable->addItem(newItem);
+
+
+            }
+
+            for (int k = 1; k < x; ++k) {
+
+                int number = ( *graphs->at(i)->at(j) )[k][0];
+                textElem = getTextByNumber(number);
+                newItem = new QListWidgetItem(textElem);
+                newTable->addItem(newItem);
+            }
+
+//            int count = newTable->count();
+//            newTable->setGeometry(40, 40, 200, 40+count*16);
+            list->append(newTable);
+
+
+        }
+    }
+
+
+
+
+    return list;
 }
 
 

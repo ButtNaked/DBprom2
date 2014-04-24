@@ -7,6 +7,8 @@
 #include <subwindows/connection.h>
 #include <core/algo/Normalization.h>
 #include <QTextDocument>
+#include <QGraphicsItem>
+#include <QListWidget>
 
 namespace Ui {
 class MainWindow;
@@ -19,7 +21,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void showOutputText();
+    void showOutput();
 
 private slots:
     void on_addAttrButton_clicked();
@@ -33,6 +35,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     Storage *storage;
+    QGraphicsScene *scene;
 };
 
 #endif // MAINWINDOW_H

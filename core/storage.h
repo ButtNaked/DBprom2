@@ -6,6 +6,15 @@
 #include <core/algo/Normalization.h>
 #include <misc/node.h>
 #include <QDebug>
+#include <QGraphicsItem>
+#include <QFont>
+#include <QBrush>
+#include <QList>
+#include <QWidget>
+#include <QListWidget>
+
+
+
 
 
 class Storage
@@ -15,7 +24,7 @@ private:
     Matrix *matrix;
     QVector<QVector<QString> > *attrTable;
     QVector<QVector<Matrix*>*>* graphs;
-    void equalMatrix();
+    void createMatrix();
 
 
 public:
@@ -29,6 +38,7 @@ public:
     const QString &getOutputText(QString & rOutText) const;
     int getNumberByText(const QString & rText) const;
     QString getTextByNumber(int rNum) const;
+    QList<QListWidget *> *getWidgetTableList() const;
 
 
 };
