@@ -25,6 +25,7 @@ Connection::Connection(QWidget *parent, Storage *rStorage) :
 
     cb->addItems(tempStl);
     cb2->addItems(tempStl);
+    cb2->setCurrentIndex(1);
 
     for (int i = 1; i < vMatrix->size(); ++i) {
         for (int j = 1; j < vMatrix->size(); ++j) {
@@ -127,6 +128,10 @@ void Connection::on_deleteConButton_clicked()
     QTableWidget *tw = ui->tableWidget;
 
     int iRow = tw->currentRow();
+    if (iRow == -1) {
+        QMessageBox::information(this, "", "Для удаления сначала выберите нужную связь.");
+        return;
+    }
     QTableWidgetItem *item1 = tw->takeItem(iRow,0);
     QTableWidgetItem *item2 = tw->takeItem(iRow,1);
     tw->removeRow(iRow);

@@ -40,6 +40,7 @@ bool Attribute::isOriginalName(const QString &text)
         }
     }
 
+
     return true;
 }
 
@@ -50,7 +51,10 @@ void Attribute::on_addAttrButton_clicked() //TODO: Добавить провер
         QMessageBox::information(this, "Внимание!", "Имя атрибута должно быть оригинальным.");
         return;
     }
-
+    if (text.size() == 0)   {
+        QMessageBox::information(this, "Внимание!", "Введите имя атрибута.");
+        return;
+    }
     QVector<QVector<QString> > *attrTable = storage->getAttrTable();
     QVector<QVector<int> > *vMatrix = storage->getVMatrix();
 
@@ -111,7 +115,7 @@ void Attribute::on_addAttrButton_clicked() //TODO: Добавить провер
 
 }
 
-void Attribute::on_delAttrButton_clicked() // TODO: добавить диалог при удалении
+void Attribute::on_delAttrButton_clicked()
 {
 
 
@@ -121,6 +125,10 @@ void Attribute::on_delAttrButton_clicked() // TODO: добавить диало�
     int actualN;
     QString text;
 
+    if ( ui->listWidget->currentRow() == -1)    {
+        QMessageBox::information(this, "", "Для удаления сначала выберите нужный атрибут");
+        return;
+    }
     QListWidgetItem *item = ui->listWidget->currentItem();
     text = item->text();
     ui->listWidget->takeItem(ui->listWidget->row(ui->listWidget->currentItem()));

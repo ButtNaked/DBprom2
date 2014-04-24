@@ -12,7 +12,6 @@ MainWindow::MainWindow(QWidget *parent) :
     scene = new QGraphicsScene(QRectF(0, 0, 731, 411));
     ui->graphicsView->setScene(scene);
 
-
     scene->setBackgroundBrush(QBrush(Qt::lightGray));
 
 }
@@ -32,8 +31,8 @@ void MainWindow::showOutput()
 
     QList<QListWidget *> *list = storage->getWidgetTableList();
 
-
-    for (int i = 0, verticalMod = 0, maxRowCount = 2; i < list->size(); ++i) {
+    int i = 0;
+    for (int verticalMod = 0, maxRowCount = 2; i < list->size(); ++i) {
 
         QListWidget *lw = list->at(i);
         scene->addWidget(lw, Qt::Window | Qt::WindowTitleHint);
@@ -42,19 +41,22 @@ void MainWindow::showOutput()
         if (count > maxRowCount)
             maxRowCount=count;
 
-        switch (i/1) {
+        switch (i/3) {
+        case 0:
+            break;
         case 1:
             verticalMod = 200;
             break;
         case 2:
             verticalMod = 300;
         default:
+            verticalMod = 400;
             break;
         }
 
-        lw->setGeometry(40+i*230, 40+verticalMod, 200, 45+count*15);
+        lw->setGeometry(30+(i%3)*240, 40+verticalMod, 200, 45+count*15);
     }
-
+    scene->setSceneRect(0, 0, 731, (1+i/9)*411 );
 
 }
 

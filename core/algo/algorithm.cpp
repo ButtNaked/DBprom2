@@ -233,7 +233,7 @@ void Iteration::thirdNF()
 	for (int j=0; j<mainM_y; j++)	
 		thirdMtmp[0][j]=(*pMainM)[0][j];
 	for (int i=1, mod=0; i<mainM_x; i++)	{
-		if (i==(headerM[mod]+1))	{
+        if (i==(headerM[mod]+1) && mod < headerM_x)	{
 			mod++;
 		}
 		else
@@ -263,7 +263,7 @@ void Iteration::thirdNF()
 	for (int j=0; j<thirdMtmp_x; j++)	
 		thirdMtmp[j][0]=thirdMtmp[j][0];
 	for (int i=1, mod=0; i<mainM_y; i++)	{
-		if (i==(headerM[mod]+1))	{
+        if (i==(headerM[mod]+1)&& mod < headerM_x)	{
 			mod++;
 		}
 		else
