@@ -12,7 +12,7 @@
 #include <QList>
 #include <QWidget>
 #include <QListWidget>
-
+#include <QByteArray>
 
 
 
@@ -34,11 +34,16 @@ public:
     Matrix *getMatrix();
     QVector<QVector<QString> > *getAttrTable();
     QVector<QVector<Matrix *> *> *getGraphs();
+    void setAttrTable(QVector<QVector<QString> > &inAttrTable);
+    void setVMatrix(QVector<QVector<int> > &inVMatrix);
     void startNormalization();
     const QString &getOutputText(QString & rOutText) const;
     int getNumberByText(const QString & rText) const;
     QString getTextByNumber(int rNum) const;
     QList<QListWidget *> *getWidgetTableList() const;
+//    void getQByteAttrTable(QByteArray &outAttrTable) const;
+//    void setQByteAttrTable(QByteArray &inAttrTable);
+
 
 
 };

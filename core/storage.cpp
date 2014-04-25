@@ -107,6 +107,20 @@ QVector<QVector<Matrix *> *> *Storage::getGraphs()
     return graphs;
 }
 
+void Storage::setAttrTable(QVector<QVector<QString> > &inAttrTable)
+{
+    delete attrTable;
+    attrTable = new QVector<QVector<QString> >;
+    (*attrTable) = inAttrTable;
+}
+
+void Storage::setVMatrix(QVector<QVector<int> > &inVMatrix)
+{
+    delete vMatrix;
+    vMatrix = new QVector<QVector<int> >;
+    (*vMatrix) = inVMatrix;
+}
+
 void Storage::startNormalization()
 {
     for (int i = 0; i < graphs->size(); ++i) {
@@ -269,6 +283,8 @@ QList<QListWidget *> *Storage::getWidgetTableList() const
 
     return list;
 }
+
+
 
 
 

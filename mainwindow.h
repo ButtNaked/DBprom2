@@ -9,6 +9,8 @@
 #include <QTextDocument>
 #include <QGraphicsItem>
 #include <QListWidget>
+#include <QFile>
+#include <QDataStream>
 
 namespace Ui {
 class MainWindow;
@@ -31,6 +33,10 @@ private slots:
     void on_normButton_clicked();
 
     void on_pushButton_clicked();
+
+    void on_actionSave_File_triggered();
+
+    void on_actionOpen_File_triggered();
 
 private:
     Ui::MainWindow *ui;

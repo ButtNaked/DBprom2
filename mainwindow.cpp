@@ -6,6 +6,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Main window [DB prom]");
+
     storage = new Storage();
     ui->textEdit->setReadOnly(1);
 
@@ -82,4 +84,25 @@ void MainWindow::on_normButton_clicked()
 void MainWindow::on_pushButton_clicked()
 {
     close();
+}
+
+void MainWindow::on_actionSave_File_triggered()
+{
+    QFile file("file.dat");
+    file.open(QIODevice::WriteOnly);
+    QDataStream out(&file);
+    out << *(storage->getAttrTable()) << *(storage->getVMatrix());
+
+}
+
+void MainWindow::on_actionOpen_File_triggered()
+{
+    QFile file("file.dat");
+    file.open(QIODevice::ReadOnly);
+    QDataStream in(&file);
+    QVector<QVector<QString> > outAttrTable;
+    QVector<QVector<int> > outVMatrix;
+    in >> outAttrTable >> outVMatrix;
+    storage->setAttrTable(outAttrTable);
+    storage->setVMatrix(outVMatrix);
 }
