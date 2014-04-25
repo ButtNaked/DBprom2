@@ -62,6 +62,14 @@ void MainWindow::showOutput()
 
 }
 
+void MainWindow::saveFile()
+{
+    QFile file(fileName);
+    file.open(QIODevice::WriteOnly);
+    QDataStream out(&file);
+    out << *(storage->getAttrTable()) << *(storage->getVMatrix());
+}
+
 void MainWindow::on_addAttrButton_clicked()
 {
     Attribute *wa = new Attribute(this, storage);
@@ -88,16 +96,16 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_actionSave_File_triggered()
 {
-    QFile file("file.dat");
-    file.open(QIODevice::WriteOnly);
-    QDataStream out(&file);
-    out << *(storage->getAttrTable()) << *(storage->getVMatrix());
+    saveFile();
+    qDebug() << fileName << "saved.";
 
 }
 
 void MainWindow::on_actionOpen_File_triggered()
 {
-    QFile file("file.dat");
+    fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("Files (*.dbp)"));
+
+    QFile file(fileName);
     file.open(QIODevice::ReadOnly);
     QDataStream in(&file);
     QVector<QVector<QString> > outAttrTable;
@@ -105,4 +113,22 @@ void MainWindow::on_actionOpen_File_triggered()
     in >> outAttrTable >> outVMatrix;
     storage->setAttrTable(outAttrTable);
     storage->setVMatrix(outVMatrix);
+    qDebug() << fileName << "opened.";
+}
+
+void MainWindow::on_actionSave_ass_triggered()
+{
+    fileName = QFileDialog::getSaveFileName(this, tr("Save file"), "untitled.dbp", tr("DB prom files (*.dbp)"));
+    saveFile();
+    qDebug() << fileName << "saved ass...";
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+    QMessageBox::information(this, "О программе...", "Программа нормализации реляционных баз данных. 2014. Масленников Роман. E-mail: m3angreen@gmail.com");
+}
+
+void MainWindow::on_actionExit_triggered()
+{
+    close();
 }

@@ -11,6 +11,7 @@
 #include <QListWidget>
 #include <QFile>
 #include <QDataStream>
+#include <QFileDialog>
 
 namespace Ui {
 class MainWindow;
@@ -24,6 +25,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void showOutput();
+    void saveFile();
 
 private slots:
     void on_addAttrButton_clicked();
@@ -38,10 +40,17 @@ private slots:
 
     void on_actionOpen_File_triggered();
 
+    void on_actionSave_ass_triggered();
+
+    void on_actionAbout_triggered();
+
+    void on_actionExit_triggered();
+
 private:
     Ui::MainWindow *ui;
     Storage *storage;
     QGraphicsScene *scene;
+    QString fileName;
 };
 
 #endif // MAINWINDOW_H
