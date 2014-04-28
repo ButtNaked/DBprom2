@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->setWindowTitle("Main window [DB prom]");
+    this->setWindowTitle(tr("Main window [DB prom]"));
 
     storage = new Storage();
     ui->textEdit->setReadOnly(1);
@@ -15,6 +15,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setScene(scene);
 
     scene->setBackgroundBrush(QBrush(Qt::lightGray));
+
+    QSettings *settings = new QSettings("settings.conf",QSettings::IniFormat, this);
+
 
 }
 
@@ -125,7 +128,7 @@ void MainWindow::on_actionSave_ass_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    QMessageBox::information(this, "О программе...", "Программа нормализации реляционных баз данных. 2014. Масленников Роман. E-mail: m3angreen@gmail.com");
+    QMessageBox::about(this, tr("О программе..."), tr("Программа нормализации реляционных баз данных. 2014. Масленников Роман. E-mail: m3angreen@gmail.com"));
 }
 
 void MainWindow::on_actionExit_triggered()

@@ -12,6 +12,7 @@
 #include <QFile>
 #include <QDataStream>
 #include <QFileDialog>
+#include <QSettings>
 
 namespace Ui {
 class MainWindow;

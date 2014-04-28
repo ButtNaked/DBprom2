@@ -7,6 +7,7 @@ Connection::Connection(QWidget *parent, Storage *rStorage) :
     storage(rStorage)
 {
     ui->setupUi(this);
+    this->setWindowTitle(tr("Add connection [DB prom]"));
 
     QVector<QVector<QString> > *attrTable = storage->getAttrTable();
     QVector<QVector<int> > *vMatrix = storage->getVMatrix();
@@ -16,7 +17,7 @@ Connection::Connection(QWidget *parent, Storage *rStorage) :
 
     tw->setColumnCount(2);
     tw->setRowCount(0);
-    tw->setHorizontalHeaderLabels(QStringList() << "Основной" << "Зависимый");
+    tw->setHorizontalHeaderLabels(QStringList() << tr("Основной") << tr("Зависимый"));
 
     QStringList tempStl;
     for (int i=0; i<attrTable->count(); i++)    {
@@ -77,7 +78,7 @@ void Connection::on_addConButton_clicked()
     QString strS = (*attrTable)[currentNum2][1];
 
     if (strM==strS) {
-        QMessageBox::information(this, "", "Атрибуты для устанавления связи должны быть разными!");
+        QMessageBox::information(this, "", tr("Атрибуты для устанавления связи должны быть разными!"));
         return;
     }
 
@@ -129,7 +130,7 @@ void Connection::on_deleteConButton_clicked()
 
     int iRow = tw->currentRow();
     if (iRow == -1) {
-        QMessageBox::information(this, "", "Для удаления сначала выберите нужную связь.");
+        QMessageBox::information(this, "", tr("Для удаления сначала выберите нужную связь."));
         return;
     }
     QTableWidgetItem *item1 = tw->takeItem(iRow,0);

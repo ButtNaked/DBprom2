@@ -7,6 +7,7 @@ Attribute::Attribute(QWidget *parent, Storage *rStorage) :
     storage(rStorage)
 {
     ui->setupUi(this);
+    this->setWindowTitle(tr("Add attribute [DB prom]"));
 
     QListWidget *lw= ui->listWidget;
     QVector<QVector<QString> > *attrTable = storage->getAttrTable();
@@ -48,11 +49,11 @@ void Attribute::on_addAttrButton_clicked() //TODO: Добавить провер
 {
     QString text = ui->lineEdit->text();
     if (!isOriginalName(text))  {
-        QMessageBox::information(this, "Внимание!", "Имя атрибута должно быть оригинальным.");
+        QMessageBox::information(this, tr("Внимание!"), tr("Имя атрибута должно быть оригинальным."));
         return;
     }
     if (text.size() == 0)   {
-        QMessageBox::information(this, "Внимание!", "Введите имя атрибута.");
+        QMessageBox::information(this, tr("Внимание!"), tr("Введите имя атрибута."));
         return;
     }
     QVector<QVector<QString> > *attrTable = storage->getAttrTable();
@@ -126,7 +127,7 @@ void Attribute::on_delAttrButton_clicked()
     QString text;
 
     if ( ui->listWidget->currentRow() == -1)    {
-        QMessageBox::information(this, "", "Для удаления сначала выберите нужный атрибут");
+        QMessageBox::information(this, tr(""), tr("Для удаления сначала выберите нужный атрибут"));
         return;
     }
     QListWidgetItem *item = ui->listWidget->currentItem();
