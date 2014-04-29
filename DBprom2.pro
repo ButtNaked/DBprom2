@@ -20,7 +20,8 @@ SOURCES += main.cpp \
     subwindows/attribute.cpp \
     subwindows/connection.cpp \
     misc/Matrix.cpp \
-    misc/node.cpp
+    misc/node.cpp \
+    subwindows/universalrelationtable.cpp
 
 HEADERS  += mainwindow.h \
     core/storage.h \
@@ -28,12 +29,14 @@ HEADERS  += mainwindow.h \
     subwindows/attribute.h \
     subwindows/connection.h \
     misc/Matrix.h \
-    misc/node.h
+    misc/node.h \
+    subwindows/universalrelationtable.h
 
 
 FORMS    += mainwindow.ui \
     subwindows/attribute.ui \
-    subwindows/connection.ui
+    subwindows/connection.ui \
+    subwindows/universalrelationtable.ui
 
 
 

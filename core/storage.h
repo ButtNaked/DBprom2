@@ -25,6 +25,7 @@ private:
     QVector<QVector<QString> > *attrTable;
     QVector<QVector<Matrix*>*>* graphs;
     void createMatrix();
+    QVector<QVector<QString>> *uniTable;
 
 
 public:
@@ -41,8 +42,7 @@ public:
     int getNumberByText(const QString & rText) const;
     QString getTextByNumber(int rNum) const;
     QList<QListWidget *> *getWidgetTableList() const;
-//    void getQByteAttrTable(QByteArray &outAttrTable) const;
-//    void setQByteAttrTable(QByteArray &inAttrTable);
+    QVector<QVector<QString> > *getUniTable() const;
 
 
 

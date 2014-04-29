@@ -54,6 +54,7 @@ Storage::Storage()
     vMatrix = new QVector<QVector<int> > (1, QVector<int>(1, 0));
     attrTable = new QVector<QVector<QString> >;
     graphs = new QVector<QVector<Matrix *> *>;
+    uniTable = new QVector<QVector<QString>>;
 
 //    for(int i = 0; i < 10; i++)
 //    {
@@ -84,6 +85,8 @@ Storage::~Storage()
     }
 
     delete graphs;
+
+    delete uniTable;
 
 }
 
@@ -254,13 +257,14 @@ QList<QListWidget *> *Storage::getWidgetTableList() const
 
             for (int l = 1; l < y; ++l) {
                 int number = ( *graphs->at(i)->at(j) )[0][l];
-                textKeys = getTextByNumber(number);
-                newItem = new QListWidgetItem(textKeys);
-                newItem->setIcon(icon1);
-                newTable->addItem(newItem);
-
-
+                textKeys += getTextByNumber(number);
+                if (l != y-1)
+                    textKeys += " + ";
             }
+            newItem = new QListWidgetItem(textKeys);
+            newItem->setIcon(icon1);
+            newTable->addItem(newItem);
+
 
             for (int k = 1; k < x; ++k) {
 
@@ -282,6 +286,11 @@ QList<QListWidget *> *Storage::getWidgetTableList() const
 
 
     return list;
+}
+
+QVector<QVector<QString> > *Storage::getUniTable() const
+{
+    return uniTable;
 }
 
 

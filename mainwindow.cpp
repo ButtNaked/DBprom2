@@ -117,6 +117,8 @@ void MainWindow::on_actionOpen_File_triggered()
     storage->setAttrTable(outAttrTable);
     storage->setVMatrix(outVMatrix);
     qDebug() << fileName << "opened.";
+
+    storage->getUniTable()->clear();
 }
 
 void MainWindow::on_actionSave_ass_triggered()
@@ -134,4 +136,10 @@ void MainWindow::on_actionAbout_triggered()
 void MainWindow::on_actionExit_triggered()
 {
     close();
+}
+
+void MainWindow::on_uniRelButton_clicked()
+{
+    UniversalRelationTable *wu = new UniversalRelationTable(this, storage);
+    wu->show();
 }

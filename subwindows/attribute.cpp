@@ -113,7 +113,6 @@ void Attribute::on_addAttrButton_clicked() //TODO: Добавить провер
 //        qDebug() << str << "\n";
 //    }
 
-
 }
 
 void Attribute::on_delAttrButton_clicked()
@@ -175,7 +174,6 @@ void Attribute::on_delAttrButton_clicked()
 //            }
 //            qDebug() << str << "\n";
 //        }
-
 
 }
 
