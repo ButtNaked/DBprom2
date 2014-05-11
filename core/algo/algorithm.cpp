@@ -22,7 +22,7 @@ void Iteration::preparing()
 		}
 	}
 
-	// Типо ловля ошибок
+    //
     try	{
     if (keyNodeCounter==0)
         throw 101;

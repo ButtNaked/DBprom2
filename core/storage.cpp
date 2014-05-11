@@ -257,13 +257,14 @@ QList<QListWidget *> *Storage::getWidgetTableList() const
 
             for (int l = 1; l < y; ++l) {
                 int number = ( *graphs->at(i)->at(j) )[0][l];
-                textKeys += getTextByNumber(number);
-                if (l != y-1)
-                    textKeys += " + ";
+                textKeys = getTextByNumber(number);
+//                if (l != y-1)
+//                    textKeys += " + ";
+                newItem = new QListWidgetItem(textKeys);
+                newItem->setIcon(icon1);
+                newTable->addItem(newItem);
             }
-            newItem = new QListWidgetItem(textKeys);
-            newItem->setIcon(icon1);
-            newTable->addItem(newItem);
+
 
 
             for (int k = 1; k < x; ++k) {
