@@ -21,7 +21,10 @@ SOURCES += main.cpp \
     subwindows/connection.cpp \
     misc/Matrix.cpp \
     misc/node.cpp \
-    subwindows/universalrelationtable.cpp
+    subwindows/universalrelationtable.cpp \
+    core/myscene.cpp \
+    core/sceneElem/arrow.cpp \
+    core/sceneElem/mytable.cpp
 
 HEADERS  += mainwindow.h \
     core/storage.h \
@@ -30,7 +33,10 @@ HEADERS  += mainwindow.h \
     subwindows/connection.h \
     misc/Matrix.h \
     misc/node.h \
-    subwindows/universalrelationtable.h
+    subwindows/universalrelationtable.h \
+    core/myscene.h \
+    core/sceneElem/arrow.h \
+    core/sceneElem/mytable.h
 
 
 FORMS    += mainwindow.ui \

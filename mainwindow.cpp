@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     storage = new Storage();
     ui->textEdit->setReadOnly(1);
 
-    scene = new QGraphicsScene(QRectF(0, 0, 731, 411));
+    scene = new MyScene(storage);
     ui->graphicsView->setScene(scene);
 
     scene->setBackgroundBrush(QBrush(Qt::lightGray));
@@ -32,36 +32,7 @@ void MainWindow::showOutput()
     scene->clear();
     QString outText;
     ui->textEdit->setHtml(storage->getOutputText(outText));
-
-
-    QList<QListWidget *> *list = storage->getWidgetTableList();
-
-    int i = 0;
-    for (int verticalMod = 0, maxRowCount = 2; i < list->size(); ++i) {
-
-        QListWidget *lw = list->at(i);
-        scene->addWidget(lw, Qt::Window | Qt::WindowTitleHint);
-
-        int count = lw->count();
-        if (count > maxRowCount)
-            maxRowCount=count;
-
-        switch (i/3) {
-        case 0:
-            break;
-        case 1:
-            verticalMod = 200;
-            break;
-        case 2:
-            verticalMod = 300;
-        default:
-            verticalMod = 400;
-            break;
-        }
-
-        lw->setGeometry(30+(i%3)*240, 40+verticalMod, 200, 45+count*15);
-    }
-    scene->setSceneRect(0, 0, 731, (1+i/9)*411 );
+    scene->fillScene();
 
 }
 
@@ -119,6 +90,8 @@ void MainWindow::on_actionOpen_File_triggered()
     qDebug() << fileName << "opened.";
 
     storage->getUniTable()->clear();
+
+    on_normButton_clicked();
 }
 
 void MainWindow::on_actionSave_ass_triggered()

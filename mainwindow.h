@@ -1,11 +1,15 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
+
 #include <core/storage.h>
 #include <subwindows/attribute.h>
 #include <subwindows/connection.h>
 #include <core/algo/Normalization.h>
+#include "core/myscene.h"
+#include <subwindows/universalrelationtable.h>
+
+#include <QMainWindow>
 #include <QTextDocument>
 #include <QGraphicsItem>
 #include <QListWidget>
@@ -13,7 +17,7 @@
 #include <QDataStream>
 #include <QFileDialog>
 #include <QSettings>
-#include <subwindows/universalrelationtable.h>
+
 
 namespace Ui {
 class MainWindow;
@@ -53,7 +57,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     Storage *storage;
-    QGraphicsScene *scene;
+    MyScene *scene;
     QString fileName;
 };
 
