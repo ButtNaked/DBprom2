@@ -30,7 +30,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::showOutput()
 {
-    scene->clear();
     QString outText;
     ui->textEdit->setHtml(storage->getOutputText(outText));
     scene->fillScene();

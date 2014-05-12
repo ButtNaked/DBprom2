@@ -69,53 +69,56 @@ void MyScene::fillScene()
 
     // Adding tables on the scene
 
-        int i = 0;
-        for (int verticalMod = 0, maxRowCount = 2; i < list.size(); ++i) {
+    int i = 0;
+    for (int verticalMod = 0, maxRowCount = 2; i < list.size(); ++i) {
 
-            this->addItem(list.at(i));
+        this->addItem(list.at(i));
 
-            int count = list.at(i)->content->count();
-            if (count > maxRowCount)
-                maxRowCount=count;
+        int count = list.at(i)->content->count();
+        if (count > maxRowCount)
+            maxRowCount=count;
 
-            switch (i/3) {
-            case 0:
-                break;
-            case 1:
-                verticalMod = 200;
-                break;
-            case 2:
-                verticalMod = 300;
-            default:
-                verticalMod = 400;
-                break;
-            }
-
-            list.at(i)->content->setGeometry(30+(i%3)*240, 40+verticalMod, 200, 45+count*15);
+        switch (i/3) {
+        case 0:
+            break;
+        case 1:
+            verticalMod = 200;
+            break;
+        case 2:
+            verticalMod = 300;
+        default:
+            verticalMod = 400;
+            break;
         }
+
+        list.at(i)->content->setGeometry(30+(i%3)*240, 40+verticalMod, 200, 45+count*15);
+    }
         //this->setSceneRect(0, 0, 731, (1+i/9)*411 );
 
 
     //Adding arrows on the scene and paint foreign items in table
     QIcon foreignIcon(":/pic/foreign.bmp");
 
-        for (int i = 0; i < arrowTable.size(); ++i) {
-            MyTable *start = list[ arrowTable[i][0] ];
-            MyTable *end = list[ arrowTable[i][2] ];
-            int startNum = arrowTable[i][1];
-            int endNum = arrowTable[i][3];
-            Arrow *newArrow = new Arrow(start, startNum, end, endNum);
-            this->addItem(newArrow);
-            start->addArrow(newArrow);
-            end->addArrow(newArrow);
-            if (arrowTable[i][4])   {
-                QBrush foreignItemsBackground(QColor(255, 255, 0, 150));
-
-                QListWidgetItem *item = start->content->item(arrowTable[i][1]);
-                item->setBackground(foreignItemsBackground);
-                item->setIcon(foreignIcon);
-            }
+    for (int i = 0; i < arrowTable.size(); ++i) {
+        MyTable *start = list[ arrowTable[i][0] ];
+        MyTable *end = list[ arrowTable[i][2] ];
+        int startNum = arrowTable[i][1];
+        int endNum = arrowTable[i][3];
+        Arrow *newArrow = new Arrow(start, startNum, end, endNum);
+        newArrow->setColor(Qt::red);
+        this->addItem(newArrow);
+        start->addArrow(newArrow);
+        end->addArrow(newArrow);
+        if (arrowTable[i][4])   {
+            QBrush foreignItemsBackground(QColor(255, 255, 0, 150));
+            newArrow->setColor(Qt::black);
+            QListWidgetItem *item = start->content->item(arrowTable[i][1]);
+            item->setBackground(foreignItemsBackground);
+            item->setIcon(foreignIcon);
         }
+    }
+    this->clearFocus();
+    this->clearSelection();
 
 }
 
