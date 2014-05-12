@@ -124,6 +124,13 @@ void Storage::setVMatrix(QVector<QVector<int> > &inVMatrix)
     (*vMatrix) = inVMatrix;
 }
 
+void Storage::setUniTable(QVector<QVector<QString> > &inUniTable)
+{
+    delete uniTable;
+    uniTable = new QVector<QVector<QString> >;
+    (*uniTable) = inUniTable;
+}
+
 void Storage::startNormalization()
 {
     for (int i = 0; i < graphs->size(); ++i) {

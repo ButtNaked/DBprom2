@@ -37,12 +37,14 @@ public:
     QVector<QVector<Matrix *> *> *getGraphs();
     void setAttrTable(QVector<QVector<QString> > &inAttrTable);
     void setVMatrix(QVector<QVector<int> > &inVMatrix);
+    void setUniTable(QVector<QVector<QString>> &inUniTable);
     void startNormalization();
     const QString &getOutputText(QString & rOutText) const;
     int getNumberByText(const QString & rText) const;
     QString getTextByNumber(int rNum) const;
     QList<QListWidget *> *getWidgetTableList() const;
     QVector<QVector<QString> > *getUniTable() const;
+
 
 
 

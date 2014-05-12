@@ -93,7 +93,7 @@ void MyScene::fillScene()
 
             list.at(i)->content->setGeometry(30+(i%3)*240, 40+verticalMod, 200, 45+count*15);
         }
-        this->setSceneRect(0, 0, 731, (1+i/9)*411 );
+        //this->setSceneRect(0, 0, 731, (1+i/9)*411 );
 
 
     //Adding arrows on the scene and paint foreign items in table
@@ -108,15 +108,14 @@ void MyScene::fillScene()
             this->addItem(newArrow);
             start->addArrow(newArrow);
             end->addArrow(newArrow);
+            if (arrowTable[i][4])   {
+                QBrush foreignItemsBackground(QColor(255, 255, 0, 150));
 
-            QBrush foreignItemsBackground(QColor(255, 255, 0, 150));
-
-            QListWidgetItem *item = start->content->item(arrowTable[i][1]);
-            item->setBackground(foreignItemsBackground);
-            item->setIcon(foreignIcon);
+                QListWidgetItem *item = start->content->item(arrowTable[i][1]);
+                item->setBackground(foreignItemsBackground);
+                item->setIcon(foreignIcon);
+            }
         }
-
-
 
 }
 
@@ -137,7 +136,7 @@ void MyScene::makeArrowTable()
                 for (int m = 0; m < graphs->size(); ++m) {
                     for (int n = 0; n < graphs->at(m)->size(); ++n) {
 
-                        int innerMaxX = graphs->at(m)->at(n)->getX();
+                        //int innerMaxX = graphs->at(m)->at(n)->getX();
                         int innerMaxY = graphs->at(m)->at(n)->getY();
 
                         for (int k = 1; k < innerMaxY; ++k) {
@@ -151,25 +150,101 @@ void MyScene::makeArrowTable()
                                 vector.append( f - 1 + ( maxY - 1) );
                                 vector.append(endTableCounter);
                                 vector.append(k - 1);
+                                vector.append(1);
                                 arrowTable.append(vector);
                             }
 
                         }
 
-
-
                         endTableCounter++;
                     }
                 }
-
-
-
-
 
             }
             startTableCounter++;
         }
     }
+
+//////////////////////////////////////////////////
+    QVector<QSet<int> > keyAttributes;
+
+
+    for (int j = 0; j < graphs->at(0)->size(); ++j) {
+        int maxY = graphs->at(0)->at(j)->getY();
+        QSet<int> newSet;
+        for (int k = 1; k < maxY; ++k) {
+            newSet << (*graphs->at(0)->at(j))[0][k];
+        }
+        keyAttributes.append(newSet);
+    }
+
+    foreach (QSet<int> set, keyAttributes) {
+        qDebug() << set.toList();
+    }
+
+    int maxSetSize = 0;
+    foreach (QSet<int> set, keyAttributes) {
+        if ( set.size() > maxSetSize)   {
+            maxSetSize = set.size();
+        }
+    }
+
+    QVector<QVector<int> > keyAttrTemp;
+
+    for (int i = 0; i < keyAttributes.size(); ++i) {
+        if (maxSetSize == keyAttributes[i].size())  {
+            for (int j = 0; j < keyAttributes.size(); ++j) {
+                if (i == j) break;
+                QSet<int> result;
+                result = keyAttributes[i];
+                result.intersect(keyAttributes[j]);
+                if (!result.isEmpty())  {
+                    QVector<int> newVec;
+                    newVec.append(i);
+                    newVec.append(j);
+                    keyAttrTemp.append(newVec);
+                }
+            }
+        }
+    }
+
+
+
+//    qDebug() << "ketAttrTemp";
+//    QString str;
+//    for (int i = 0; i < keyAttrTemp.size(); i++)	{
+//        for (int j = 0; j < keyAttrTemp.at(i).size(); j++)   {
+//            QString temp;
+//            str += temp.setNum(keyAttrTemp[i][j]) += " ";
+//        }
+//        qDebug() << str;
+//        str.clear();
+//    }
+//    qDebug() << "\n";
+
+    for (int i = 0; i < keyAttrTemp.size(); ++i) {
+        int matrixStart = keyAttrTemp[i][0];
+        int matrixEnd = keyAttrTemp[i][1];
+        int maxStartY = graphs->at(0)->at(matrixStart)->getY();
+        int maxEndY = graphs->at(0)->at(matrixEnd)->getY();
+
+        for (int m = 1; m < maxStartY; ++m)    {
+            int startNum = (*graphs->at(0)->at(matrixStart))[0][m];
+            for (int n = 1; n < maxEndY; ++n)    {
+                int endNum = (*graphs->at(0)->at(matrixEnd))[0][n];
+                if ( startNum == endNum )   {
+                    QVector<int> vector;
+                    vector.append(matrixStart);
+                    vector.append( m -1 );
+                    vector.append(matrixEnd);
+                    vector.append( n - 1);
+                    vector.append(0);
+                    arrowTable.append(vector);
+                }
+            }
+        }
+    }
+
 
     qDebug() << "ArrowTable";
     QString str;
@@ -182,29 +257,5 @@ void MyScene::makeArrowTable()
         str.clear();
     }
     qDebug() << "\n";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

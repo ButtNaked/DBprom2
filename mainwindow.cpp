@@ -6,7 +6,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->setWindowTitle(tr("Main window [DB prom]"));
+
+    QString title(tr("Main window [DB prom] v"));
+    title += version;
+    this->setWindowTitle(title);
 
     storage = new Storage();
     ui->textEdit->setReadOnly(1);
@@ -39,7 +42,8 @@ void MainWindow::saveFile()
     QFile file(fileName);
     file.open(QIODevice::WriteOnly);
     QDataStream out(&file);
-    out << *(storage->getAttrTable()) << *(storage->getVMatrix());
+    out << version << *(storage->getAttrTable())
+    << *(storage->getVMatrix()) << *(storage->getUniTable());
 }
 
 void MainWindow::on_addAttrButton_clicked()
@@ -80,14 +84,20 @@ void MainWindow::on_actionOpen_File_triggered()
     QFile file(fileName);
     file.open(QIODevice::ReadOnly);
     QDataStream in(&file);
+    QString outVersion;
     QVector<QVector<QString> > outAttrTable;
     QVector<QVector<int> > outVMatrix;
-    in >> outAttrTable >> outVMatrix;
+    QVector<QVector<QString> > outUniTable;
+    in >> outVersion >> outAttrTable >> outVMatrix >> outUniTable;
+    if (outVersion != version) {
+        qDebug() << "Разные версии";
+        return;
+    }
+
     storage->setAttrTable(outAttrTable);
     storage->setVMatrix(outVMatrix);
+    storage->setUniTable(outUniTable);
     qDebug() << fileName << "opened.";
-
-    storage->getUniTable()->clear();
 
     on_normButton_clicked();
 }

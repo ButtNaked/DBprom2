@@ -55,6 +55,7 @@ private slots:
     void on_uniRelButton_clicked();
 
 private:
+    const QString version = "0.85";
     Ui::MainWindow *ui;
     Storage *storage;
     MyScene *scene;
