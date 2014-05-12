@@ -4,6 +4,8 @@ MyScene::MyScene(Storage *rStorage, QObject *parent) :
     QGraphicsScene(parent)
 {
     storage = rStorage;
+    this->setBackgroundBrush(QBrush(QColor(240, 248, 255, 255))); // colour AliceBlue
+
 }
 
 void MyScene::fillScene()
@@ -18,12 +20,13 @@ void MyScene::fillScene()
         for (int j = 0; j < graphs->at(i)->size(); ++j) {
             int x = graphs->at(i)->at(j)->getX();
             int y = graphs->at(i)->at(j)->getY();
-            QString textHeader = "Табл: ";
+            QString textHeader = tr("Т: ");
             QString textKeys;
             QString textElem;
             QListWidget *newTable = new QListWidget();
             QListWidgetItem *newItem;
             QIcon icon1(":/pic/key.bmp");
+            QBrush keyItemsBackground(QColor(0, 255, 127, 150));
 
             for (int l = 1; l < y; ++l) {
                 int number = ( *graphs->at(i)->at(j) )[0][l];
@@ -42,6 +45,7 @@ void MyScene::fillScene()
 //                if (l != y-1)
 //                    textKeys += " + ";
                 newItem = new QListWidgetItem(textKeys);
+                newItem->setBackground(keyItemsBackground);
                 newItem->setIcon(icon1);
                 newTable->addItem(newItem);
             }
@@ -92,7 +96,8 @@ void MyScene::fillScene()
         this->setSceneRect(0, 0, 731, (1+i/9)*411 );
 
 
-    //Adding arrows on the scene
+    //Adding arrows on the scene and paint foreign items in table
+    QIcon foreignIcon(":/pic/foreign.bmp");
 
         for (int i = 0; i < arrowTable.size(); ++i) {
             MyTable *start = list[ arrowTable[i][0] ];
@@ -103,6 +108,12 @@ void MyScene::fillScene()
             this->addItem(newArrow);
             start->addArrow(newArrow);
             end->addArrow(newArrow);
+
+            QBrush foreignItemsBackground(QColor(255, 255, 0, 150));
+
+            QListWidgetItem *item = start->content->item(arrowTable[i][1]);
+            item->setBackground(foreignItemsBackground);
+            item->setIcon(foreignIcon);
         }
 
 

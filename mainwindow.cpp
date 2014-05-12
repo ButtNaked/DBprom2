@@ -14,8 +14,6 @@ MainWindow::MainWindow(QWidget *parent) :
     scene = new MyScene(storage);
     ui->graphicsView->setScene(scene);
 
-    scene->setBackgroundBrush(QBrush(Qt::lightGray));
-
     QSettings *settings = new QSettings("settings.conf",QSettings::IniFormat, this);
 
 

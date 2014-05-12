@@ -53,7 +53,7 @@ const qreal Pi = 3.14;
 Arrow::Arrow(MyTable *startItem, int StartItemElemNum, MyTable *endItem, int endItemElemNum, QGraphicsItem *parent)
     : QGraphicsLineItem(parent)
 {
-    setZValue(100.0);
+    setZValue(1);
     myStartItem = startItem;
     myEndItem = endItem;
     myStartItemElemNum = StartItemElemNum;

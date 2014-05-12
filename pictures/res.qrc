@@ -2,5 +2,6 @@
     <qresource prefix="/pic">
         <file>key.bmp</file>
         <file>key.png</file>
+        <file>foreign.bmp</file>
     </qresource>
 </RCC>

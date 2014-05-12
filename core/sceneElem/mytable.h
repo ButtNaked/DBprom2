@@ -22,6 +22,8 @@ private:
 protected:
     void moveEvent(QGraphicsSceneMoveEvent *moveEvent);
     void resizeEvent(QGraphicsSceneResizeEvent *event);
+    void focusInEvent(QFocusEvent * event);
+    void focusOutEvent(QFocusEvent * event);
 };
 
 #endif // MYTABLE_H
