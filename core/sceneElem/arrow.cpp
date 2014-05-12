@@ -82,7 +82,7 @@ QRectF Arrow::boundingRect() const
 QPainterPath Arrow::shape() const
 {
     QPainterPath path = QGraphicsLineItem::shape();
-    //path.addPolygon(arrowHead);
+    path.addPolygon(arrowHead);
     return path;
 }
 //! [2]
@@ -119,7 +119,7 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
 
     QPen myPen = pen();
     myPen.setColor(myColor);
-    qreal arrowSize = 20;
+    qreal arrowSize = 7;
     painter->setPen(myPen);
     painter->setBrush(myColor);
 //! [4] //! [5]
@@ -143,20 +143,21 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
 //    setLine(QLineF(intersectPoint, myStartItem->pos()));
 ////! [5] //! [6]
 
-//    double angle = ::acos(line().dx() / line().length());
-//    if (line().dy() >= 0)
-//        angle = (Pi * 2) - angle;
+    QLineF reversedLine(line().p2(), line().p1());
+    double angle = ::acos(reversedLine.dx() / reversedLine.length());
+    if (reversedLine.dy() >= 0)
+        angle = (Pi * 2) - angle;
 
-//        QPointF arrowP1 = line().p1() + QPointF(sin(angle + Pi / 3) * arrowSize,
-//                                        cos(angle + Pi / 3) * arrowSize);
-//        QPointF arrowP2 = line().p1() + QPointF(sin(angle + Pi - Pi / 3) * arrowSize,
-//                                        cos(angle + Pi - Pi / 3) * arrowSize);
+        QPointF arrowP1 = reversedLine.p1() + QPointF(sin(angle + Pi / 3) * arrowSize,
+                                        cos(angle + Pi / 3) * arrowSize);
+        QPointF arrowP2 = reversedLine.p1() + QPointF(sin(angle + Pi - Pi / 3) * arrowSize,
+                                        cos(angle + Pi - Pi / 3) * arrowSize);
 
-//        arrowHead.clear();
-//        arrowHead << line().p1() << arrowP1 << arrowP2;
+        arrowHead.clear();
+        arrowHead << reversedLine.p1() << arrowP1 << arrowP2;
 ////! [6] //! [7]
 //        painter->drawLine(line());
-//        painter->drawPolygon(arrowHead);
+        painter->drawPolygon(arrowHead);
 //        if (isSelected()) {
 //            painter->setPen(QPen(myColor, 1, Qt::DashLine));
         QLineF myLine = line();
