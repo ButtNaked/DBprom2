@@ -181,9 +181,9 @@ void MyScene::makeArrowTable()
         keyAttributes.append(newSet);
     }
 
-    foreach (QSet<int> set, keyAttributes) {
-        qDebug() << set.toList();
-    }
+//    foreach (QSet<int> set, keyAttributes) {
+//        qDebug() << set.toList();
+//    }
 
     int maxSetSize = 0;
     foreach (QSet<int> set, keyAttributes) {
@@ -249,16 +249,16 @@ void MyScene::makeArrowTable()
     }
 
 
-    qDebug() << "ArrowTable";
-    QString str;
-    for (int i = 0; i < arrowTable.size(); i++)	{
-        for (int j = 0; j < arrowTable.at(i).size(); j++)   {
-            QString temp;
-            str += temp.setNum(arrowTable[i][j]) += " ";
-        }
-        qDebug() << str;
-        str.clear();
-    }
-    qDebug() << "\n";
+//    qDebug() << "ArrowTable";
+//    QString str;
+//    for (int i = 0; i < arrowTable.size(); i++)	{
+//        for (int j = 0; j < arrowTable.at(i).size(); j++)   {
+//            QString temp;
+//            str += temp.setNum(arrowTable[i][j]) += " ";
+//        }
+//        qDebug() << str;
+//        str.clear();
+//    }
+//    qDebug() << "\n";
 
 }

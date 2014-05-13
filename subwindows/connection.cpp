@@ -96,15 +96,25 @@ void Connection::on_addConButton_clicked()
 
     for (int i = 0; i < attrTable->size(); ++i) {
         if (strM == (*attrTable)[i][1])   {
-            numberY=( (*attrTable)[i][0]).toInt()+1;
+            numberY=( (*attrTable)[i][0]).toInt();
         }
         if (strS == (*attrTable)[i][1])   {
-            numberX=( (*attrTable)[i][0]).toInt()+1;
+            numberX=( (*attrTable)[i][0]).toInt();
         }
 
     }
 
-    (*vMatrix)[numberX][numberY]= 1;
+    int coordX = -1;
+    int coordY = -1;
+    for (int i = 1; i < vMatrix->size(); ++i) {
+        if (numberX == vMatrix->at(i).at(0))    coordX = i;
+        if (numberY == vMatrix->at(0).at(i))    coordY = i;
+    }
+
+    if ( ( coordX != -1 ) && ( coordY != -1 ) )  {
+        (*vMatrix)[coordX][coordY]= 1;
+    }   else qDebug() << "vMatrix write error...";
+
 
 
 //    for (int i = 0; i < vMatrix->size(); ++i) {
@@ -119,7 +129,10 @@ void Connection::on_addConButton_clicked()
 //        qDebug() << str << "\n";
 //    }
 
-
+//    for (int i = 0; i < attrTable->size(); ++i) {
+//        qDebug() << (*attrTable)[i][0] << (*attrTable)[i][1];
+//    }
+//    qDebug() << "_____________________";
 }
 
 void Connection::on_deleteConButton_clicked()
