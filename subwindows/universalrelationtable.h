@@ -5,6 +5,12 @@
 #include <core/storage.h>
 #include <QTableWidget>
 
+struct Rule
+{
+    QVector<int> keys;
+    int attr;
+};
+
 namespace Ui {
 class UniversalRelationTable;
 }
@@ -26,7 +32,7 @@ private:
     QVector<QVector<QString> > *attrTable;
 
     void validation();
-    void checkRule(int key, int attr);
+    void checkRule(Rule& rRule);
 
 private slots:
     void updateTable(QTableWidgetItem *rItem);

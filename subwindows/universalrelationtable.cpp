@@ -73,12 +73,6 @@ UniversalRelationTable::~UniversalRelationTable()
     delete ui;
 }
 
-struct Rule
-{
-    QVector<int> keys;
-    int attr;
-};
-
 void UniversalRelationTable::validation()
 {
 //    QBrush redBackground(Qt::red);
@@ -118,32 +112,38 @@ void UniversalRelationTable::validation()
 
     foreach (Rule rule, rulesList) {
 //        qDebug() << rule.keys << rule.attr;
-        foreach (int key, rule.keys) {
-            checkRule(key, rule.attr);
-        }
+        checkRule(rule);
     }
 
 }
 
-void UniversalRelationTable::checkRule(int key, int attr)
+void UniversalRelationTable::checkRule(Rule &rRule)
 {
-    int keyPos = -1;
-    int attrPos = -1;
+    Rule posRule = rRule;
     for (int i = 0; i < uniTable->at(0).size(); ++i) {
-        if ( uniTable->at(0).at(i).toInt() == key) keyPos = i;
-        if ( uniTable->at(0).at(i).toInt() == attr) attrPos = i;
+        for (int q = 0; q < rRule.keys.size(); ++q) {
+            if ( rRule.keys.at(q) == uniTable->at(0).at(i).toInt()) {
+                posRule.keys[q] = i;
+            }
+        }
+
+        if ( uniTable->at(0).at(i).toInt() == rRule.attr) posRule.attr = i;
     }
 
-    if (  (keyPos == -1) || (attrPos == -1))    {
-        qDebug() << "Check rule Error";
-        return;
-    }
+//    if (  (keyPos == -1) || (attrPos == -1))    {
+//        qDebug() << "Check rule Error";
+//        return;
+//    }
 
     QList<QString> keyNames;
 
     for (int i = 1; i < uniTable->size() -1 ; ++i) {
-            if ( !(keyNames.contains( (*uniTable)[i][keyPos] )) )  {
-                keyNames.append( (*uniTable)[i][keyPos] );
+        QString compositeKey;
+        for (int j = 0; j < posRule.keys.size(); ++j) {
+            compositeKey += (*uniTable)[i][posRule.keys[j]];
+        }
+            if ( !(keyNames.contains( compositeKey )) )  {
+                keyNames.append( compositeKey );
             }
     }
 
@@ -156,10 +156,14 @@ void UniversalRelationTable::checkRule(int key, int attr)
         QString sample;
         QList<int> tupleRows;
         for (int j = 1; j < uniTable->size() -1 ; ++j) {
-            if ( (*uniTable)[j][keyPos] == keyNames[i])   {
+            QString compositeKey;
+            for (int k = 0; k < posRule.keys.size(); ++k) {
+                compositeKey += (*uniTable)[j][posRule.keys[k]];
+            }
+            if ( compositeKey == keyNames[i])   {
                tupleRows.append(j - 1);
-               if ( sample.isEmpty() ) sample = (*uniTable)[j][attrPos];
-               else if ( sample != (*uniTable)[j][attrPos] ) {
+               if ( sample.isEmpty() ) sample = (*uniTable)[j][posRule.attr];
+               else if ( sample != (*uniTable)[j][posRule.attr] ) {
                     isTupleValid = false;
                }
 
@@ -169,12 +173,13 @@ void UniversalRelationTable::checkRule(int key, int attr)
         if (!isTupleValid)  {
             for (int n = 0; n < tupleRows.size(); ++n) {
                 QBrush redBackground(Qt::red);
-                QTableWidgetItem *item1 = wt->item(tupleRows[n], keyPos);
-                QTableWidgetItem *item2 = wt->item(tupleRows[n], attrPos);
+                for (int q = 0; q < posRule.keys.size(); ++q) {
+                    QTableWidgetItem *item1 = wt->item(tupleRows[n], posRule.keys[q]);
+                    item1->setBackground(QBrush(Qt::yellow));
+                }
 
-                item1->setBackground(QBrush(Qt::yellow));
+                QTableWidgetItem *item2 = wt->item(tupleRows[n], posRule.attr);
                 item2->setBackground(redBackground);
-
             }
         }
    }
