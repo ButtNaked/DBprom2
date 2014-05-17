@@ -143,26 +143,26 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
 //    setLine(QLineF(intersectPoint, myStartItem->pos()));
 ////! [5] //! [6]
 
-    QLineF reversedLine(line().p2(), line().p1());
-    double angle = ::acos(reversedLine.dx() / reversedLine.length());
-    if (reversedLine.dy() >= 0)
+    //QLineF reversedLine(line().p2(), line().p1());
+    QLineF myLine = line();
+    double angle = ::acos(myLine.dx() / myLine.length());
+    if (myLine.dy() >= 0)
         angle = (Pi * 2) - angle;
 
-        QPointF arrowP1 = reversedLine.p1() + QPointF(sin(angle + Pi / 3) * arrowSize,
+        QPointF arrowP1 = myLine.p1() + QPointF(sin(angle + Pi / 3) * arrowSize,
                                         cos(angle + Pi / 3) * arrowSize);
-        QPointF arrowP2 = reversedLine.p1() + QPointF(sin(angle + Pi - Pi / 3) * arrowSize,
+        QPointF arrowP2 = myLine.p1() + QPointF(sin(angle + Pi - Pi / 3) * arrowSize,
                                         cos(angle + Pi - Pi / 3) * arrowSize);
 
         arrowHead.clear();
-        arrowHead << reversedLine.p1() << arrowP1 << arrowP2;
+        arrowHead << myLine.p1() << arrowP1 << arrowP2;
 ////! [6] //! [7]
 //        painter->drawLine(line());
         painter->drawPolygon(arrowHead);
 //        if (isSelected()) {
 //            painter->setPen(QPen(myColor, 1, Qt::DashLine));
-        QLineF myLine = line();
         painter->drawLine(myLine);
-        QRectF myRect( QPointF ( myLine.p1().x() - 3, myLine.p1().y() - 3 ), QSizeF(6, 6));
+        QRectF myRect( QPointF ( myLine.p2().x() - 3, myLine.p2().y() - 3 ), QSizeF(6, 6));
         painter->drawEllipse(myRect);
 
 //        myLine.translate(0, 4.0);

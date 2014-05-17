@@ -105,7 +105,7 @@ void MyScene::fillScene()
         int startNum = arrowTable[i][1];
         int endNum = arrowTable[i][3];
         Arrow *newArrow = new Arrow(start, startNum, end, endNum);
-        newArrow->setColor(Qt::red);
+        newArrow->setColor(Qt::blue);
         this->addItem(newArrow);
         start->addArrow(newArrow);
         end->addArrow(newArrow);
