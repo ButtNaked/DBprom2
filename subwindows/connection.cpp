@@ -133,6 +133,8 @@ void Connection::on_addConButton_clicked()
 //        qDebug() << (*attrTable)[i][0] << (*attrTable)[i][1];
 //    }
 //    qDebug() << "_____________________";
+
+    storage->somethingChanged();
 }
 
 void Connection::on_deleteConButton_clicked()
@@ -169,7 +171,7 @@ void Connection::on_deleteConButton_clicked()
 
 
 
-
+    storage->somethingChanged();
 }
 
 void Connection::on_acceptButton_clicked()

@@ -23,9 +23,10 @@ private:
     QTableWidget *wt;
     QVector<QVector<QString>> *uniTable;
     QVector<QVector<int> > *vMatrix;
+    QVector<QVector<QString> > *attrTable;
 
     void validation();
-    void checkTuples(int key, int attr);
+    void checkRule(int key, int attr);
 
 private slots:
     void updateTable(QTableWidgetItem *rItem);

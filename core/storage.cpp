@@ -149,6 +149,7 @@ void Storage::startNormalization()
     createMatrix();
 
     Normalization norm(matrix, graphs);
+    normalizationUpdated();
 
     qDebug() << "*******************************";
     for (int i = 0; i < graphs->size(); ++i) {
@@ -157,8 +158,6 @@ void Storage::startNormalization()
         }
     }
     qDebug() << "*******************************";
-
-
 }
 
 const QString &Storage::getOutputText(QString &rOutText) const
@@ -299,6 +298,21 @@ QList<QListWidget *> *Storage::getWidgetTableList() const
 QVector<QVector<QString> > *Storage::getUniTable() const
 {
     return uniTable;
+}
+
+bool Storage::isUpToDate() const
+{
+    return upToDate;
+}
+
+void Storage::somethingChanged()
+{
+    upToDate = false;
+}
+
+void Storage::normalizationUpdated()
+{
+    upToDate = true;
 }
 
 

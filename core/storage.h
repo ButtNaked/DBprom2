@@ -20,6 +20,7 @@
 class Storage
 {
 private:
+    bool upToDate = false;
     QVector<QVector<int> > *vMatrix;
     Matrix *matrix;
     QVector<QVector<QString> > *attrTable;
@@ -44,6 +45,9 @@ public:
     QString getTextByNumber(int rNum) const;
     QList<QListWidget *> *getWidgetTableList() const;
     QVector<QVector<QString> > *getUniTable() const;
+    bool isUpToDate() const;
+    void somethingChanged();
+    void normalizationUpdated();
 
 
 

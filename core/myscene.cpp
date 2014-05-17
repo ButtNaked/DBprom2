@@ -171,7 +171,7 @@ void MyScene::makeArrowTable()
     }
 
 //////////////////////////////////////////////////
-/// key to key relation
+/// key to key relation arrows
 //////////////////////////////////////////////////
 
     struct KeyAttrElem
@@ -300,16 +300,16 @@ void MyScene::makeArrowTable()
     }
 
 
-////    qDebug() << "ArrowTable";
-////    QString str;
-////    for (int i = 0; i < arrowTable.size(); i++)	{
-////        for (int j = 0; j < arrowTable.at(i).size(); j++)   {
-////            QString temp;
-////            str += temp.setNum(arrowTable[i][j]) += " ";
-////        }
-////        qDebug() << str;
-////        str.clear();
-////    }
-////    qDebug() << "\n";
+//    qDebug() << "ArrowTable";
+//    QString str;
+//    for (int i = 0; i < arrowTable.size(); i++)	{
+//        for (int j = 0; j < arrowTable.at(i).size(); j++)   {
+//            QString temp;
+//            str += temp.setNum(arrowTable[i][j]) += " ";
+//        }
+//        qDebug() << str;
+//        str.clear();
+//    }
+//    qDebug() << "\n";
 
 }
