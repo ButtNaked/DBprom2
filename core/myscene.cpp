@@ -1,4 +1,6 @@
 #include "myscene.h"
+#include <misc/Matrix.h>
+#include <core/algo/Normalization.h>
 
 MyScene::MyScene(Storage *rStorage, QObject *parent) :
     QGraphicsScene(parent)
@@ -169,42 +171,90 @@ void MyScene::makeArrowTable()
     }
 
 //////////////////////////////////////////////////
-    QVector<QSet<int> > keyAttributes;
+/// key to key relation
+//////////////////////////////////////////////////
 
-
-    for (int j = 0; j < graphs->at(0)->size(); ++j) {
-        int maxY = graphs->at(0)->at(j)->getY();
-        QSet<int> newSet;
-        for (int k = 1; k < maxY; ++k) {
-            newSet << (*graphs->at(0)->at(j))[0][k];
+    struct KeyAttrElem
+    {
+        int number;
+        QSet<int> set;
+        bool operator()(const KeyAttrElem& a, const KeyAttrElem& b) const
+        {
+          return a.set.size() > b.set.size();
         }
-        keyAttributes.append(newSet);
+    };
+
+    QVector<KeyAttrElem> keyAttributes;
+
+    int keyConnectionSize = graphs->at(0)->size() + 1;
+    Matrix *keyCon = new Matrix(keyConnectionSize, keyConnectionSize);
+    keyCon->fillWithNumber(0);
+    for (int i = 1; i < keyConnectionSize; ++i) {
+        (*keyCon)[i][0] = i-1;
+        (*keyCon)[0][i] = i-1;
     }
 
-//    foreach (QSet<int> set, keyAttributes) {
-//        qDebug() << set.toList();
+    for (int j = 0; j < graphs->at(0)->size(); ++j) {        
+        int maxY = graphs->at(0)->at(j)->getY();
+        KeyAttrElem newElem;
+        newElem.number = j;
+        for (int k = 1; k < maxY; ++k) {
+            newElem.set << (*graphs->at(0)->at(j))[0][k];
+        }
+        keyAttributes.append(newElem);
+    }
+
+    qSort(keyAttributes.begin(), keyAttributes.end(), //Sort with lambda functor
+          [](const KeyAttrElem& a, const KeyAttrElem& b){return a.set.size() > b.set.size(); } );
+
+//    foreach (KeyAttrElem elem, keyAttributes) {
+//        qDebug() << elem.number << elem.set.toList();
 //    }
 
-    int maxSetSize = 0;
-    foreach (QSet<int> set, keyAttributes) {
-        if ( set.size() > maxSetSize)   {
-            maxSetSize = set.size();
-        }
-    }
 
     QVector<QVector<int> > keyAttrTemp;
 
-    for (int i = 0; i < keyAttributes.size(); ++i) {
-        if (maxSetSize == keyAttributes[i].size())  {
-            for (int j = 0; j < keyAttributes.size(); ++j) {
-                if (i == j) break;
-                QSet<int> result;
-                result = keyAttributes[i];
-                result.intersect(keyAttributes[j]);
-                if (!result.isEmpty())  {
+    int i = 0;
+    while ( keyAttributes[i].set.size() != 1 ) {
+        for (int j = 0; j < keyAttributes.size(); ++j) {
+            if ( i == j ) continue;
+            else if (keyAttributes[i].set.contains(keyAttributes[j].set) )   {
+                QVector<int> newVec;
+                newVec.append(keyAttributes[i].number);
+                newVec.append(keyAttributes[j].number);
+                keyAttrTemp.append(newVec);
+            }
+
+        }
+        i++;
+    }
+
+
+    foreach (QVector<int> vec, keyAttrTemp) {
+        (*keyCon)[ vec[1]+1 ][ vec[0]+1 ] = 1;
+    }
+    //keyCon->show();
+    QVector<QVector<Matrix*>*> *out = new QVector<QVector<Matrix *> *>;
+    Normalization norm(keyCon, out);
+
+//    qDebug() << "*******test************************";
+//    for (int i = 0; i < out->size(); ++i) {
+//        for (int j = 0; j < out->at(i)->size(); ++j) {
+//            out->at(i)->at(j)->show();
+//        }
+//    }
+//    qDebug() << "*******************************";
+
+    keyAttrTemp.clear();
+    for (int i = 0; i < out->size(); ++i) {
+        for (int j = 0; j < out->at(i)->size(); ++j) {
+            int x = out->at(i)->at(j)->getX();
+            int y = out->at(i)->at(j)->getY();
+            for (int q = 1; q < x; ++q) {
+                for (int p = 1; p < y; ++p) {
                     QVector<int> newVec;
-                    newVec.append(i);
-                    newVec.append(j);
+                    newVec.append( (*out->at(i)->at(j))[0][p] );
+                    newVec.append( (*out->at(i)->at(j))[q][0] );
                     keyAttrTemp.append(newVec);
                 }
             }
@@ -224,6 +274,7 @@ void MyScene::makeArrowTable()
 //        str.clear();
 //    }
 //    qDebug() << "\n";
+
 
     for (int i = 0; i < keyAttrTemp.size(); ++i) {
         int matrixStart = keyAttrTemp[i][0];
@@ -249,16 +300,16 @@ void MyScene::makeArrowTable()
     }
 
 
-//    qDebug() << "ArrowTable";
-//    QString str;
-//    for (int i = 0; i < arrowTable.size(); i++)	{
-//        for (int j = 0; j < arrowTable.at(i).size(); j++)   {
-//            QString temp;
-//            str += temp.setNum(arrowTable[i][j]) += " ";
-//        }
-//        qDebug() << str;
-//        str.clear();
-//    }
-//    qDebug() << "\n";
+////    qDebug() << "ArrowTable";
+////    QString str;
+////    for (int i = 0; i < arrowTable.size(); i++)	{
+////        for (int j = 0; j < arrowTable.at(i).size(); j++)   {
+////            QString temp;
+////            str += temp.setNum(arrowTable[i][j]) += " ";
+////        }
+////        qDebug() << str;
+////        str.clear();
+////    }
+////    qDebug() << "\n";
 
 }
