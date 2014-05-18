@@ -55,7 +55,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Add</string>
+    <string>Добавить</string>
    </property>
   </widget>
   <widget class="QPushButton" name="deleteConButton">
@@ -68,7 +68,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Delete</string>
+    <string>Удалить</string>
    </property>
   </widget>
   <widget class="QPushButton" name="cancelButton">
@@ -81,7 +81,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Close</string>
+    <string>Закрыть</string>
    </property>
   </widget>
   <widget class="QTableWidget" name="tableWidget">

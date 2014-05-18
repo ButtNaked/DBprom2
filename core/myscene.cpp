@@ -211,7 +211,6 @@ void MyScene::makeArrowTable()
 //        qDebug() << elem.number << elem.set.toList();
 //    }
 
-
     QVector<QVector<int> > keyAttrTemp;
 
     int i = 0;
@@ -227,12 +226,13 @@ void MyScene::makeArrowTable()
 
         }
         i++;
+        if ( keyAttributes.size() <= i ) break;
     }
-
 
     foreach (QVector<int> vec, keyAttrTemp) {
         (*keyCon)[ vec[1]+1 ][ vec[0]+1 ] = 1;
     }
+
     //keyCon->show();
     QVector<QVector<Matrix*>*> *out = new QVector<QVector<Matrix *> *>;
     Normalization norm(keyCon, out);
@@ -299,6 +299,7 @@ void MyScene::makeArrowTable()
         }
     }
 
+    delete out;
 
 //    qDebug() << "ArrowTable";
 //    QString str;

@@ -27,6 +27,8 @@ private:
     QVector<QVector<Matrix*>*>* graphs;
     void createMatrix();
     QVector<QVector<QString>> *uniTable;
+    QVector<int> superKey;
+    QString dbName;
 
 
 public:
@@ -48,7 +50,11 @@ public:
     bool isUpToDate() const;
     void somethingChanged();
     void normalizationUpdated();
-
+    const QVector<int>& getSuperKey() const;
+    void updateSuperKey();
+    QString getSuperKeytoString() const;
+    void setdbName(QString & rdbName);
+    const QString& getdbName() const;
 
 
 

@@ -71,19 +71,6 @@ void UniversalRelationTable::tuplesValidation()
         //QMessageBox::information(this, tr(""), tr("Обновленно."));
     }
 
-    //SuperKeyFinding
-//    QVector<int> superKey;
-//    QVector<int> superKeyPos;
-//    for (int i = 1; i < vMatrix->size(); ++i) {
-//        for (int j = 1; j < vMatrix->size(); ++j) {
-//            if ( vMatrix->at(i).at(j) == 1) break;
-//            else if ( (vMatrix->at(i).at(j) == 0) && ( j == vMatrix->size()-1 ) )   {
-//                superKey.append( vMatrix->at(i).at(0) );
-//                superKeyPos.append(i);
-//            }
-//        }
-//    }
-
     //Making rule array, that consist all rules.
     QList<Rule> rulesList;
     QVector<QVector<Matrix*>*>* graphs = storage->getGraphs();

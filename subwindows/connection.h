@@ -25,8 +25,6 @@ private slots:
 
     void on_deleteConButton_clicked();
 
-    void on_acceptButton_clicked();
-
     void on_cancelButton_clicked();
 
 private:

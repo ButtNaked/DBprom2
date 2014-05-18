@@ -17,7 +17,9 @@ MainWindow::MainWindow(QWidget *parent) :
     scene = new MyScene(storage);
     ui->graphicsView->setScene(scene);
 
-    QSettings *settings = new QSettings("settings.conf",QSettings::IniFormat, this);
+    ui->masterKeyLabel->setText("Введите связи между атрибутами для отображения ключа универсального отношения.");
+
+    //QSettings *settings = new QSettings("settings.conf",QSettings::IniFormat, this);
 
 
 }
@@ -55,13 +57,15 @@ void MainWindow::on_addConButton_clicked()
 {
     Connection *wc = new Connection(this, storage);
     wc->show();
+    storage->updateSuperKey();
+    if (!storage->getSuperKeytoString().isEmpty())
+        ui->masterKeyLabel->setText(QString(tr("Ключ универсального отношения: ")) += storage->getSuperKeytoString());
 }
 
 void MainWindow::on_normButton_clicked()
 {
     storage->startNormalization();
     this->showOutput();
-
 }
 
 void MainWindow::on_pushButton_clicked()

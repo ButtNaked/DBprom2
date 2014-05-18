@@ -7,7 +7,7 @@ Connection::Connection(QWidget *parent, Storage *rStorage) :
     storage(rStorage)
 {
     ui->setupUi(this);
-    this->setWindowTitle(tr("Add connection [DB prom]"));
+    this->setWindowTitle(tr("Добавление связи [DB prom]"));
 
     attrTable = storage->getAttrTable();
     vMatrix = storage->getVMatrix();
@@ -19,14 +19,14 @@ Connection::Connection(QWidget *parent, Storage *rStorage) :
     tw->setRowCount(0);
     tw->setHorizontalHeaderLabels(QStringList() << tr("Основной") << tr("Зависимый"));
 
-    QStringList tempStl;
     for (int i=0; i<attrTable->count(); i++)    {
-        tempStl.append( (*attrTable)[i][1] );
+        QString itemStr = (*attrTable)[i][1];
+        QVariant itemNum = (*attrTable)[i][0];
+        cb->addItem(itemStr, itemNum);
+        cb2->addItem(itemStr, itemNum);
     }
-
-    cb->addItems(tempStl);
-    cb2->addItems(tempStl);
     cb2->setCurrentIndex(1);
+
 
     for (int i = 1; i < vMatrix->size(); ++i) {
         for (int j = 1; j < vMatrix->size(); ++j) {
@@ -55,7 +55,6 @@ Connection::Connection(QWidget *parent, Storage *rStorage) :
     }
 
     tw->sortItems(0);
-
 }
 
 Connection::~Connection()
@@ -65,13 +64,24 @@ Connection::~Connection()
 
 void Connection::on_addConButton_clicked()
 {
-    int currentNum = cb->currentIndex();
-    int currentNum2 = cb2->currentIndex();
+    QString currentNum = cb->currentData().value<QString>();
+    QString currentNum2 = cb2->currentData().value<QString>();
 
-    QString strM = (*attrTable)[currentNum][1];
-    QString strS = (*attrTable)[currentNum2][1];
+    QString strM, strS;
+    for (int i = 0; i < attrTable->size(); ++i) {
+        if ( currentNum == (*attrTable)[i][0] ) {
+            strM = (*attrTable)[i][1];
+            break;
+        }
+    }
+    for (int i = 0; i < attrTable->size(); ++i) {
+        if ( currentNum2 == (*attrTable)[i][0] ) {
+            strS = (*attrTable)[i][1];
+            break;
+        }
+    }
 
-    if (strM==strS) {
+    if (currentNum == currentNum2) {
         QMessageBox::information(this, "", tr("Атрибуты для устанавления связи должны быть разными!"));
         return;
     }
@@ -109,25 +119,6 @@ void Connection::on_addConButton_clicked()
         (*vMatrix)[coordX][coordY]= 1;
     }   else qDebug() << "vMatrix write error...";
 
-
-
-//    for (int i = 0; i < vMatrix->size(); ++i) {
-//        QString str;
-//        for (int j = 0; j < vMatrix->size(); ++j) {
-
-//            int tempint = (*vMatrix)[i][j];
-//            QString temp;
-//            str += temp.setNum(tempint);
-
-//        }
-//        qDebug() << str << "\n";
-//    }
-
-//    for (int i = 0; i < attrTable->size(); ++i) {
-//        qDebug() << (*attrTable)[i][0] << (*attrTable)[i][1];
-//    }
-//    qDebug() << "_____________________";
-
     storage->somethingChanged();
 }
 
@@ -160,11 +151,6 @@ void Connection::on_deleteConButton_clicked()
     (*vMatrix)[numberX][numberY]= 0;
 
     storage->somethingChanged();
-}
-
-void Connection::on_acceptButton_clicked()
-{
-    close();
 }
 
 void Connection::on_cancelButton_clicked()

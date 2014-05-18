@@ -7,7 +7,7 @@ Attribute::Attribute(QWidget *parent, Storage *rStorage) :
     storage(rStorage)
 {
     ui->setupUi(this);
-    this->setWindowTitle(tr("Add attribute [DB prom]"));
+    this->setWindowTitle(tr("Добавление атрибута [DB prom]"));
 
     lw = ui->listWidget;
     attrTable = storage->getAttrTable();

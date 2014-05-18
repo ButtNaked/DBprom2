@@ -162,7 +162,7 @@ void Storage::startNormalization()
 
 const QString &Storage::getOutputText(QString &rOutText) const
 {
-    rOutText="<h3 align= \"center\">Результирующие отношения:</h3>";
+    rOutText="<h3 align= \"center\">Cхемы отношений:</h3>";
 
     for (int i = 0; i < graphs->size(); ++i) {
         for (int j = 0; j < graphs->at(i)->size(); ++j) {
@@ -227,74 +227,6 @@ QString Storage::getTextByNumber(int rNum) const
 
 }
 
-
-QList<QListWidget *> *Storage::getWidgetTableList() const
-{
-
-    QList<QListWidget *> *list = new QList<QListWidget *>;
-
-
-
-    //item1->setTextAlignment(Qt::AlignHCenter);
-
-
-
-    for (int i = 0; i < graphs->size(); ++i) {
-        for (int j = 0; j < graphs->at(i)->size(); ++j) {
-            int x = graphs->at(i)->at(j)->getX();
-            int y = graphs->at(i)->at(j)->getY();
-            QString textHeader = "Таблица: ";
-            QString textKeys;
-            QString textElem;
-            QListWidget *newTable = new QListWidget();
-            QListWidgetItem *newItem;
-            QIcon icon1(":/pic/key.bmp");
-
-            for (int l = 1; l < y; ++l) {
-                int number = ( *graphs->at(i)->at(j) )[0][l];
-                textHeader += getTextByNumber(number);
-                if (l != y-1)
-                    textHeader += "_";
-
-
-            }
-            newTable->setWindowTitle(textHeader);
-
-
-            for (int l = 1; l < y; ++l) {
-                int number = ( *graphs->at(i)->at(j) )[0][l];
-                textKeys = getTextByNumber(number);
-//                if (l != y-1)
-//                    textKeys += " + ";
-                newItem = new QListWidgetItem(textKeys);
-                newItem->setIcon(icon1);
-                newTable->addItem(newItem);
-            }
-
-
-
-            for (int k = 1; k < x; ++k) {
-
-                int number = ( *graphs->at(i)->at(j) )[k][0];
-                textElem = getTextByNumber(number);
-                newItem = new QListWidgetItem(textElem);
-                newTable->addItem(newItem);
-            }
-
-//            int count = newTable->count();
-//            newTable->setGeometry(40, 40, 200, 40+count*16);
-            list->append(newTable);
-
-
-        }
-    }
-
-
-
-
-    return list;
-}
-
 QVector<QVector<QString> > *Storage::getUniTable() const
 {
     return uniTable;
@@ -313,6 +245,48 @@ void Storage::somethingChanged()
 void Storage::normalizationUpdated()
 {
     upToDate = true;
+}
+
+const QVector<int>& Storage::getSuperKey() const
+{
+    return superKey;
+}
+
+void Storage::updateSuperKey()
+{
+    superKey.clear();
+    for (int i = 1; i < vMatrix->size(); ++i) {
+        for (int j = 1; j < vMatrix->size(); ++j) {
+            if ( vMatrix->at(i).at(j) == 1) break;
+            else if ( (vMatrix->at(i).at(j) == 0) && ( j == vMatrix->size()-1 ) )   {
+                superKey.append( vMatrix->at(i).at(0) );
+            }
+        }
+    }
+}
+
+QString Storage::getSuperKeytoString() const
+{
+   QString superKeyString;
+   for (int q = 0; q < superKey.size(); ++q) {
+       for (int i = 0; i < attrTable->size(); ++i) {
+           if ( (*attrTable)[i][0] == QString::number(superKey[q]) )   {
+                superKeyString += (*attrTable)[i][1] += " ";
+           }
+       }
+   }
+
+   return superKeyString;
+}
+
+void Storage::setdbName(QString &rdbName)
+{
+    dbName = rdbName;
+}
+
+const QString &Storage::getdbName() const
+{
+    return dbName;
 }
 
 
