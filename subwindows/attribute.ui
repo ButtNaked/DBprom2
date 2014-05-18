@@ -10,22 +10,21 @@
     <height>397</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>565</width>
+    <height>397</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>565</width>
+    <height>397</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QPushButton" name="saveButton">
-   <property name="geometry">
-    <rect>
-     <x>370</x>
-     <y>340</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Ok</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
@@ -36,7 +35,69 @@
     </rect>
    </property>
    <property name="text">
-    <string>Cancel</string>
+    <string>Закрыть</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>300</y>
+     <width>131</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="addAttrButton">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>300</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Добавить</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="delAttrButton">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>350</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Удалить</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>300</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Имя атрибута:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>10</y>
+     <width>151</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Введите атрибуты:</string>
    </property>
   </widget>
   <widget class="QListWidget" name="listWidget">
@@ -49,42 +110,14 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>290</y>
-     <width>113</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="addAttrButton">
-   <property name="geometry">
-    <rect>
-     <x>190</x>
-     <y>290</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Add</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="delAttrButton">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>340</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Delete</string>
-   </property>
-  </widget>
+  <zorder>pushButton_2</zorder>
+  <zorder>listWidget</zorder>
+  <zorder>lineEdit</zorder>
+  <zorder>addAttrButton</zorder>
+  <zorder>delAttrButton</zorder>
+  <zorder>label</zorder>
+  <zorder>listWidget</zorder>
+  <zorder>label_2</zorder>
  </widget>
  <resources/>
  <connections/>

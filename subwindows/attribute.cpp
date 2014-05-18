@@ -103,9 +103,12 @@ void Attribute::on_addAttrButton_clicked()
 void Attribute::on_delAttrButton_clicked()
 {
     if ( ui->listWidget->currentRow() == -1)    {
-        QMessageBox::information(this, tr(""), tr("Для удаления сначала выберите нужный атрибут"));
+        QMessageBox::information(this, tr(""), tr("Для удаления сначала выберите нужный атрибут."));
         return;
     }
+
+    auto result = QMessageBox::question(this, "", tr("Вы уверены что хотите удалить выбранный атрибут?"));
+    if ( result == QMessageBox::No) return;
 
     QListWidgetItem *delItem = lw->takeItem(lw->row(lw->currentItem()));
     QString delItemText = delItem->text();
@@ -133,7 +136,11 @@ void Attribute::on_delAttrButton_clicked()
             (*vMatrix)[i].remove(delItemPosition);
     }
 
+    //Данные были изменены
+    storage->somethingChanged();
+
     //Удаление из uniTable
+    if (uniTable->isEmpty()) return;
     for (int i = 0; i < uniTable->at(0).size(); ++i) {
         if ( ((*uniTable)[0][i]).toInt() == delItemNum) {
             delItemPosition = i;
@@ -142,17 +149,8 @@ void Attribute::on_delAttrButton_clicked()
     for (int i = 0; i < uniTable->size(); ++i) {
         (*uniTable)[i].remove(delItemPosition);
     }
-
-    //Данные были изменены
-    storage->somethingChanged();
 }
 
-
-void Attribute::on_saveButton_clicked()
-{
-
-    close();
-}
 
 void Attribute::on_pushButton_2_clicked()
 {

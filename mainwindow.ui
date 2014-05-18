@@ -17,27 +17,32 @@
    <widget class="QPushButton" name="addAttrButton">
     <property name="geometry">
      <rect>
-      <x>914</x>
-      <y>70</y>
-      <width>91</width>
-      <height>23</height>
+      <x>894</x>
+      <y>62</y>
+      <width>111</width>
+      <height>31</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string>Add Attribute</string>
+     <string>Добавить атрибуты</string>
     </property>
    </widget>
    <widget class="QPushButton" name="addConButton">
     <property name="geometry">
      <rect>
-      <x>914</x>
+      <x>894</x>
       <y>100</y>
-      <width>91</width>
-      <height>23</height>
+      <width>111</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>Add connection</string>
+     <string>Добавить связи</string>
     </property>
    </widget>
    <widget class="QPushButton" name="normButton">
@@ -50,27 +55,27 @@
      </rect>
     </property>
     <property name="text">
-     <string>Normalize</string>
+     <string>Нормализовать</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>780</x>
-      <y>560</y>
+      <x>910</x>
+      <y>640</y>
       <width>75</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>Close</string>
+     <string>Закрыть</string>
     </property>
    </widget>
    <widget class="QTextEdit" name="textEdit">
     <property name="geometry">
      <rect>
       <x>160</x>
-      <y>560</y>
+      <y>570</y>
       <width>601</width>
       <height>121</height>
      </rect>
@@ -79,7 +84,7 @@
    <widget class="QGraphicsView" name="graphicsView">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>10</y>
       <width>881</width>
       <height>531</height>
@@ -89,14 +94,32 @@
    <widget class="QPushButton" name="uniRelButton">
     <property name="geometry">
      <rect>
-      <x>920</x>
+      <x>894</x>
       <y>140</y>
-      <width>75</width>
-      <height>23</height>
+      <width>111</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Универ. отношение</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>550</y>
+      <width>101</width>
+      <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>Universal</string>
+     <string>Схемы отношений:</string>
     </property>
    </widget>
   </widget>
@@ -111,7 +134,7 @@
    </property>
    <widget class="QMenu" name="menuMenu">
     <property name="title">
-     <string>Menu</string>
+     <string>Меню</string>
     </property>
     <addaction name="actionOpen_File"/>
     <addaction name="actionSave_File"/>
@@ -121,11 +144,11 @@
    </widget>
    <widget class="QMenu" name="menuOptions">
     <property name="title">
-     <string>Options</string>
+     <string>Настройки</string>
     </property>
     <widget class="QMenu" name="menuLanguage">
      <property name="title">
-      <string>Language</string>
+      <string>Язык</string>
      </property>
      <addaction name="actionEnglish"/>
      <addaction name="actionRussian"/>
@@ -143,30 +166,29 @@
     <bool>false</bool>
    </attribute>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionSave_File">
    <property name="text">
-    <string>Save File</string>
+    <string>Сохранить</string>
    </property>
   </action>
   <action name="actionOpen_File">
    <property name="text">
-    <string>Open File</string>
+    <string>Открыть файл</string>
    </property>
   </action>
   <action name="actionAbout">
    <property name="text">
-    <string>About</string>
+    <string>О программе</string>
    </property>
   </action>
   <action name="actionExit">
    <property name="text">
-    <string>Exit</string>
+    <string>Выход</string>
    </property>
   </action>
   <action name="actionSave_ass">
    <property name="text">
-    <string>Save  ass...</string>
+    <string>Сохранить как...</string>
    </property>
   </action>
   <action name="actionEnglish">

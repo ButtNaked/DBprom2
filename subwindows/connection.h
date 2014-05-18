@@ -1,9 +1,12 @@
 #ifndef CONNECTION_H
 #define CONNECTION_H
 
-#include <QDialog>
 #include <core/storage.h>
+
 #include <QMessageBox>
+#include <QDialog>
+#include <QComboBox>
+#include <QTableWidget>
 
 namespace Ui {
 class Connection;
@@ -29,6 +32,11 @@ private slots:
 private:
     Ui::Connection *ui;
     Storage *storage;
+    QVector<QVector<QString> > *attrTable;
+    QVector<QVector<int> > *vMatrix;
+    QComboBox *cb;
+    QComboBox *cb2;
+    QTableWidget *tw;
 };
 
 #endif // CONNECTION_H

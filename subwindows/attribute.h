@@ -24,8 +24,6 @@ private slots:
 
     void on_delAttrButton_clicked();
 
-    void on_saveButton_clicked();
-
     void on_pushButton_2_clicked();
 
 private:

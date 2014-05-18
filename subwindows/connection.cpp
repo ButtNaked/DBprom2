@@ -9,11 +9,11 @@ Connection::Connection(QWidget *parent, Storage *rStorage) :
     ui->setupUi(this);
     this->setWindowTitle(tr("Add connection [DB prom]"));
 
-    QVector<QVector<QString> > *attrTable = storage->getAttrTable();
-    QVector<QVector<int> > *vMatrix = storage->getVMatrix();
-    QTableWidget *tw = ui->tableWidget;
-    QComboBox *cb = ui->comboBox;
-    QComboBox *cb2 = ui->comboBox_2;
+    attrTable = storage->getAttrTable();
+    vMatrix = storage->getVMatrix();
+    tw = ui->tableWidget;
+    cb = ui->comboBox;
+    cb2 = ui->comboBox_2;
 
     tw->setColumnCount(2);
     tw->setRowCount(0);
@@ -65,12 +65,6 @@ Connection::~Connection()
 
 void Connection::on_addConButton_clicked()
 {
-    QVector<QVector<QString> > *attrTable = storage->getAttrTable();
-    QVector<QVector<int> > *vMatrix = storage->getVMatrix();
-    QComboBox *cb = ui->comboBox;
-    QComboBox *cb2 = ui->comboBox_2;
-    QTableWidget *tw = ui->tableWidget;
-
     int currentNum = cb->currentIndex();
     int currentNum2 = cb2->currentIndex();
 
@@ -139,18 +133,14 @@ void Connection::on_addConButton_clicked()
 
 void Connection::on_deleteConButton_clicked()
 {
-    QVector<QVector<QString> > *attrTable = storage->getAttrTable();
-    QVector<QVector<int> > *vMatrix = storage->getVMatrix();
-    QTableWidget *tw = ui->tableWidget;
-
-    int iRow = tw->currentRow();
-    if (iRow == -1) {
+    int curRow = tw->currentRow();
+    if (curRow == -1) {
         QMessageBox::information(this, "", tr("Для удаления сначала выберите нужную связь."));
         return;
     }
-    QTableWidgetItem *item1 = tw->takeItem(iRow,0);
-    QTableWidgetItem *item2 = tw->takeItem(iRow,1);
-    tw->removeRow(iRow);
+    QTableWidgetItem *item1 = tw->takeItem(curRow,0);
+    QTableWidgetItem *item2 = tw->takeItem(curRow,1);
+    tw->removeRow(curRow);
 
     QString strM = item1->text();
     QString strS = item2->text();
@@ -168,8 +158,6 @@ void Connection::on_deleteConButton_clicked()
     }
 
     (*vMatrix)[numberX][numberY]= 0;
-
-
 
     storage->somethingChanged();
 }
