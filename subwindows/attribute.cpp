@@ -87,6 +87,9 @@ void Attribute::on_addAttrButton_clicked()
         (*vMatrix)[i] << 0;
     }
 
+    //Данные были изменены
+    storage->somethingChanged();
+
     //добавление нового атрибута в uniTable
     if (uniTable->isEmpty()) return;
     (*uniTable)[0].append(QString::number(number));
@@ -95,9 +98,6 @@ void Attribute::on_addAttrButton_clicked()
         (*uniTable)[i].append(tr("ПУСТО"));
     }
     (*uniTable)[uniTable->size() - 1].append("");
-
-    //Данные были изменены
-    storage->somethingChanged();
 }
 
 void Attribute::on_delAttrButton_clicked()
@@ -143,6 +143,7 @@ void Attribute::on_delAttrButton_clicked()
         (*uniTable)[i].remove(delItemPosition);
     }
 
+    //Данные были изменены
     storage->somethingChanged();
 }
 

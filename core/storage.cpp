@@ -149,7 +149,7 @@ void Storage::startNormalization()
     createMatrix();
 
     Normalization norm(matrix, graphs);
-    normalizationUpdated();
+    this->normalizationUpdated();
 
     qDebug() << "*******************************";
     for (int i = 0; i < graphs->size(); ++i) {

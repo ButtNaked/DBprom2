@@ -66,7 +66,10 @@ void UniversalRelationTable::fillTableWidget()
 void UniversalRelationTable::tuplesValidation()
 {
     //Check is storage up to date
-    if(!storage->isUpToDate()) {storage->startNormalization(); return;}
+    if(!storage->isUpToDate()) {
+        storage->startNormalization();
+        //QMessageBox::information(this, tr(""), tr("Обновленно."));
+    }
 
     //SuperKeyFinding
 //    QVector<int> superKey;
@@ -199,7 +202,7 @@ void UniversalRelationTable::updateTable(QTableWidgetItem* rItem)
 
 void UniversalRelationTable::on_actionCheck_triggered()
 {
-    //repaint all (almost) TableWidget items in white
+    //repaint all (almost) TableWidget items in white color
     for (int i = 0; i < wt->rowCount() - 1 ; ++i) {
         for (int j = 0; j < wt->columnCount(); ++j) {
             QTableWidgetItem *item = wt->item(i, j);
