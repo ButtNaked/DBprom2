@@ -9,8 +9,10 @@ Attribute::Attribute(QWidget *parent, Storage *rStorage) :
     ui->setupUi(this);
     this->setWindowTitle(tr("Add attribute [DB prom]"));
 
-    QListWidget *lw= ui->listWidget;
-    QVector<QVector<QString> > *attrTable = storage->getAttrTable();
+    lw = ui->listWidget;
+    attrTable = storage->getAttrTable();
+    vMatrix = storage->getVMatrix();
+    uniTable = storage->getUniTable();
 
     if (!attrTable->isEmpty())  {
         for (int i=0; i<attrTable->size(); i++) {
@@ -21,9 +23,6 @@ Attribute::Attribute(QWidget *parent, Storage *rStorage) :
     QRegExp exp("[a-zA-zа-яА-я_0-9]{1,35}");
     ui->lineEdit->setValidator(new QRegExpValidator(exp, this));
 
-
-
-
 }
 
 Attribute::~Attribute()
@@ -33,19 +32,16 @@ Attribute::~Attribute()
 
 bool Attribute::isOriginalName(const QString &text)
 {
-    QVector<QVector<QString> > *attrTable = storage->getAttrTable();
-
     for (int i = 0; i < attrTable->size(); ++i) {
         if ( (*attrTable)[i][1] == text)  {
             return false;
         }
     }
 
-
     return true;
 }
 
-void Attribute::on_addAttrButton_clicked() //TODO: Добавить проверку на разные имена атрибутов
+void Attribute::on_addAttrButton_clicked()
 {
     QString text = ui->lineEdit->text();
     if (!isOriginalName(text))  {
@@ -56,12 +52,10 @@ void Attribute::on_addAttrButton_clicked() //TODO: Добавить провер
         QMessageBox::information(this, tr("Внимание!"), tr("Введите имя атрибута."));
         return;
     }
-    QVector<QVector<QString> > *attrTable = storage->getAttrTable();
-    QVector<QVector<int> > *vMatrix = storage->getVMatrix();
 
-    ui->listWidget->addItem(text);
+    lw->addItem(text);
     ui->lineEdit->clear();
-    ui->listWidget->scrollToBottom();
+    lw->scrollToBottom();
 
     //добавление нового атрибута в attrTable
     QVector<QString> vec;
@@ -75,18 +69,11 @@ void Attribute::on_addAttrButton_clicked() //TODO: Добавить провер
     }
     else    number = 0;
 
-    vec.push_back(QString::number(number));
-    vec.push_back(text);
-
-    attrTable->push_back(vec);
-
-//    for (int i = 0; i < attrTable->size(); ++i) {
-//        qDebug() << (*attrTable)[i][0] << (*attrTable)[i][1];
-//    }
-//    qDebug() << "_____________________";
+    vec.append(QString::number(number));
+    vec.append(text);
+    attrTable->append(vec);
 
     //добавление нового атрибута в vMatrix
-
     QVector<int> iVec;
     iVec.append(number);
     vMatrix->append(iVec);
@@ -100,80 +87,61 @@ void Attribute::on_addAttrButton_clicked() //TODO: Добавить провер
         (*vMatrix)[i] << 0;
     }
 
+    //добавление нового атрибута в uniTable
+    if (uniTable->isEmpty()) return;
+    (*uniTable)[0].append(QString::number(number));
 
-//    for (int i = 0; i < vMatrix->size(); ++i) {
-//        QString str;
-//        for (int j = 0; j < vMatrix->size(); ++j) {
+    for (int i = 1; i < uniTable->size() - 1; ++i) {
+        (*uniTable)[i].append(tr("ПУСТО"));
+    }
+    (*uniTable)[uniTable->size() - 1].append("");
 
-//            int tempint = (*vMatrix)[i][j];
-//            QString temp;
-//            str += temp.setNum(tempint);
-
-//        }
-//        qDebug() << str << "\n";
-//    }
+    //Данные были изменены
     storage->somethingChanged();
 }
 
 void Attribute::on_delAttrButton_clicked()
 {
-
-
-    QVector<QVector<QString> > *attrTable = storage->getAttrTable();
-    QVector<QVector<int> > *vMatrix = storage->getVMatrix();
-    int number = -1;
-    int actualN;
-    QString text;
-
     if ( ui->listWidget->currentRow() == -1)    {
         QMessageBox::information(this, tr(""), tr("Для удаления сначала выберите нужный атрибут"));
         return;
     }
-    QListWidgetItem *item = ui->listWidget->currentItem();
-    text = item->text();
-    ui->listWidget->takeItem(ui->listWidget->row(ui->listWidget->currentItem()));
 
+    QListWidgetItem *delItem = lw->takeItem(lw->row(lw->currentItem()));
+    QString delItemText = delItem->text();
 
     //удаление из attrTable
-
+    int delItemNum = -1;
     for (int i = 0; i < attrTable->size(); ++i) {
-        if ( (*attrTable)[i][1] == text )   {
-            number = ((*attrTable)[i][0]).toInt();
+        if ( (*attrTable)[i][1] == delItemText )   {
+            delItemNum = ((*attrTable)[i][0]).toInt();
             attrTable->remove(i);
-            break; //!!!!
-        }
-    }
-
-//        for (int i = 0; i < attrTable->size(); ++i) {
-//            qDebug() << (*attrTable)[i][0] << (*attrTable)[i][1];
-//        }
-//        qDebug() << "_____________________";
-
-    //удаление из vMatrix
-
-    for (int i = 1; i < vMatrix->size(); ++i) {
-        if ( (*vMatrix)[i][0] == number)    {
-            actualN=i;
-            vMatrix->remove(i);
             break;
         }
     }
 
+    //удаление из vMatrix
+    int delItemPosition = -1;
+    for (int i = 1; i < vMatrix->size(); ++i) {
+        if ( (*vMatrix)[i][0] == delItemNum)    {
+            delItemPosition=i;
+            vMatrix->remove(i);
+            break;
+        }
+    }
     for (int i = 0; i < vMatrix->size(); ++i) {
-            (*vMatrix)[i].remove(actualN);
+            (*vMatrix)[i].remove(delItemPosition);
     }
 
-//        for (int i = 0; i < vMatrix->size(); ++i) {
-//            QString str;
-//            for (int j = 0; j < vMatrix->size(); ++j) {
-
-//                int tempint = (*vMatrix)[i][j];
-//                QString temp;
-//                str += temp.setNum(tempint);
-
-//            }
-//            qDebug() << str << "\n";
-//        }
+    //Удаление из uniTable
+    for (int i = 0; i < uniTable->at(0).size(); ++i) {
+        if ( ((*uniTable)[0][i]).toInt() == delItemNum) {
+            delItemPosition = i;
+        }
+    }
+    for (int i = 0; i < uniTable->size(); ++i) {
+        (*uniTable)[i].remove(delItemPosition);
+    }
 
     storage->somethingChanged();
 }

@@ -5,10 +5,11 @@
 #include <core/storage.h>
 #include <QTableWidget>
 
+// Structure to keep rules based on attributes realation
 struct Rule
 {
-    QVector<int> keys;
-    int attr;
+    QVector<int> keys;  // key attributes
+    int attr;           // depend attribute
 };
 
 namespace Ui {
@@ -31,12 +32,13 @@ private:
     QVector<QVector<int> > *vMatrix;
     QVector<QVector<QString> > *attrTable;
 
-    void validation();
-    void checkRule(Rule& rRule);
+    void fillTableWidget();     //fill table widget with items
+    void tuplesValidation();    //create set of rules for future tuples validation
+    void checkRule(Rule& rRule);//check rules and paint items, if check dont passed
 
 private slots:
-    void updateTable(QTableWidgetItem *rItem);
-    void on_actionCheck_triggered();
+    void updateTable(QTableWidgetItem* rItem);// update tableWidget and uniTable
+    void on_actionCheck_triggered();          //initiate tuples validation process
 };
 
 #endif // UNIVERSALRELATIONTABLE_H

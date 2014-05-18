@@ -31,6 +31,10 @@ private slots:
 private:
     Ui::Attribute *ui;
     Storage *storage;
+    QListWidget *lw;
+    QVector<QVector<QString> > *attrTable;
+    QVector<QVector<int> > *vMatrix;
+    QVector<QVector<QString>> *uniTable;
 };
 
 #endif // ATTRIBUTE_H

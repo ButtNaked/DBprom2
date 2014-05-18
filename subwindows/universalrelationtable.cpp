@@ -1,6 +1,8 @@
 #include "universalrelationtable.h"
 #include "ui_universalrelationtable.h"
 
+#include <QMessageBox>
+
 UniversalRelationTable::UniversalRelationTable(QWidget *parent, Storage *rStorage) :
     QMainWindow(parent),
     ui(new Ui::UniversalRelationTable),
@@ -15,12 +17,21 @@ UniversalRelationTable::UniversalRelationTable(QWidget *parent, Storage *rStorag
     vMatrix = storage->getVMatrix();
     attrTable = storage->getAttrTable();
 
+    this->fillTableWidget();
 
+    connect (ui->tableWidget,SIGNAL(itemChanged(QTableWidgetItem*)),this,SLOT(updateTable(QTableWidgetItem*)));
+}
+
+UniversalRelationTable::~UniversalRelationTable()
+{
+    delete ui;
+}
+
+void UniversalRelationTable::fillTableWidget()
+{
     wt->setColumnCount(attrTable->count());
 
     if (!uniTable->isEmpty())    {
-//        qDebug() << "not empty";
-
         for (int i = 0; i < wt->columnCount(); ++i) {
             QString headerTextItem = uniTable->at(0).at(i);
             QTableWidgetItem *item = new QTableWidgetItem(storage->getTextByNumber(headerTextItem.toInt()));
@@ -36,8 +47,6 @@ UniversalRelationTable::UniversalRelationTable(QWidget *parent, Storage *rStorag
         }
     }
     else    {
-//        qDebug() << "empty";
-
         for (int i = 0; i < wt->columnCount(); ++i) {
             QTableWidgetItem *item = new QTableWidgetItem(attrTable->at(i).at(1));
             wt->setHorizontalHeaderItem(i, item);
@@ -52,32 +61,12 @@ UniversalRelationTable::UniversalRelationTable(QWidget *parent, Storage *rStorag
         QVector<QString> vector(attrTable->count(), QString(""));
         uniTable->append(vector);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    connect (ui->tableWidget,SIGNAL(itemChanged(QTableWidgetItem*)),this,SLOT(updateTable(QTableWidgetItem*)));
 }
 
-UniversalRelationTable::~UniversalRelationTable()
+void UniversalRelationTable::tuplesValidation()
 {
-    delete ui;
-}
-
-void UniversalRelationTable::validation()
-{
-//    QBrush redBackground(Qt::red);
-//    rItem->setBackground(redBackground);
-    if(!storage->isUpToDate()) {qDebug() << "Need updated normalization"; return;}
+    //Check is storage up to date
+    if(!storage->isUpToDate()) {storage->startNormalization(); return;}
 
     //SuperKeyFinding
 //    QVector<int> superKey;
@@ -92,6 +81,7 @@ void UniversalRelationTable::validation()
 //        }
 //    }
 
+    //Making rule array, that consist all rules.
     QList<Rule> rulesList;
     QVector<QVector<Matrix*>*>* graphs = storage->getGraphs();
     for (int i = 0; i < graphs->size(); ++i) {
@@ -106,85 +96,83 @@ void UniversalRelationTable::validation()
                 }
                 rulesList.append(newRule);
             }
-
         }
     }
 
+    //Calling checkRule method for every rule
     foreach (Rule rule, rulesList) {
-//        qDebug() << rule.keys << rule.attr;
         checkRule(rule);
     }
 
+    QMessageBox::information(this, tr(""), tr("Готово."));
 }
 
-void UniversalRelationTable::checkRule(Rule &rRule)
+void UniversalRelationTable::checkRule(Rule &rRule) //method cheking rule and paint tablewidget items
 {
-    Rule posRule = rRule;
+    //Conversion attributes index values in positional values
+    Rule rule = rRule;
     for (int i = 0; i < uniTable->at(0).size(); ++i) {
         for (int q = 0; q < rRule.keys.size(); ++q) {
             if ( rRule.keys.at(q) == uniTable->at(0).at(i).toInt()) {
-                posRule.keys[q] = i;
+                rule.keys[q] = i;
             }
         }
-
-        if ( uniTable->at(0).at(i).toInt() == rRule.attr) posRule.attr = i;
+        if ( uniTable->at(0).at(i).toInt() == rRule.attr) rule.attr = i;
     }
 
-//    if (  (keyPos == -1) || (attrPos == -1))    {
-//        qDebug() << "Check rule Error";
-//        return;
-//    }
-
-    QList<QString> keyNames;
+    // Gather all unique key-tuples in one QList
+    QList<QString> uniqueKeyTuples;
 
     for (int i = 1; i < uniTable->size() -1 ; ++i) {
-        QString compositeKey;
-        for (int j = 0; j < posRule.keys.size(); ++j) {
-            compositeKey += (*uniTable)[i][posRule.keys[j]];
+        QString keyTuple;
+        for (int j = 0; j < rule.keys.size(); ++j) {
+            keyTuple += (*uniTable)[i][rule.keys[j]];
         }
-            if ( !(keyNames.contains( compositeKey )) )  {
-                keyNames.append( compositeKey );
+            if ( !(uniqueKeyTuples.contains( keyTuple )) )  {
+                uniqueKeyTuples.append( keyTuple );
             }
     }
 
-////    qDebug() << keyNames;
+    //Calculating for every unique keyTuple his range of rows and store it in tupleRowsPos.
+    //Next cheking this range for depend attibutes, if attribute tuples not equal, then
+    //set tupleValidFlag = false.
+    //This actions reapiting for every unique key-tuple in uniqueKeyTuples array.
+    bool tupleValidFlag;
 
-    bool isTupleValid;
+    for (int i = 0; i < uniqueKeyTuples.size(); ++i) {
 
-    for (int i = 0; i < keyNames.size(); ++i) {
-        isTupleValid = true;
-        QString sample;
-        QList<int> tupleRows;
+        tupleValidFlag = true;
+        QString dependAttrTuple;
+        QList<int> tupleRowsPos;
         for (int j = 1; j < uniTable->size() -1 ; ++j) {
-            QString compositeKey;
-            for (int k = 0; k < posRule.keys.size(); ++k) {
-                compositeKey += (*uniTable)[j][posRule.keys[k]];
-            }
-            if ( compositeKey == keyNames[i])   {
-               tupleRows.append(j - 1);
-               if ( sample.isEmpty() ) sample = (*uniTable)[j][posRule.attr];
-               else if ( sample != (*uniTable)[j][posRule.attr] ) {
-                    isTupleValid = false;
-               }
 
+            QString keyTuple;
+            for (int k = 0; k < rule.keys.size(); ++k) {
+                keyTuple += (*uniTable)[j][rule.keys[k]];
+            }
+
+            if ( keyTuple == uniqueKeyTuples[i])   {
+               tupleRowsPos.append(j - 1);
+               if ( dependAttrTuple.isEmpty() ) dependAttrTuple = (*uniTable)[j][rule.attr];
+               else if ( dependAttrTuple != (*uniTable)[j][rule.attr] ) {
+                    tupleValidFlag = false;
+               }
             }
         }
 
-        if (!isTupleValid)  {
-            for (int n = 0; n < tupleRows.size(); ++n) {
+    // If flag is not true, paint appopriate tableWidget items
+        if (!tupleValidFlag)  {
+            for (int n = 0; n < tupleRowsPos.size(); ++n) {
                 QBrush redBackground(Qt::red);
-                for (int q = 0; q < posRule.keys.size(); ++q) {
-                    QTableWidgetItem *item1 = wt->item(tupleRows[n], posRule.keys[q]);
+                for (int q = 0; q < rule.keys.size(); ++q) {
+                    QTableWidgetItem *item1 = wt->item(tupleRowsPos[n], rule.keys[q]);
                     item1->setBackground(QBrush(Qt::yellow));
                 }
-
-                QTableWidgetItem *item2 = wt->item(tupleRows[n], posRule.attr);
+                QTableWidgetItem *item2 = wt->item(tupleRowsPos[n], rule.attr);
                 item2->setBackground(redBackground);
             }
         }
    }
-
-
 }
 
 void UniversalRelationTable::updateTable(QTableWidgetItem* rItem)
@@ -198,23 +186,20 @@ void UniversalRelationTable::updateTable(QTableWidgetItem* rItem)
         uniTable->append(vector);
     }
 
-//    qDebug() << "UniTable";
-//    for (int i = 0; i < uniTable->size(); ++i) {
-//        QString str;
-//        for (int j = 0; j < uniTable->at(i).size(); ++j) {
-//            str += uniTable->at(i).at(j);
-//        }
-//        qDebug() << str;
-//    }
+    qDebug() << "UniTable";
+    for (int i = 0; i < uniTable->size(); ++i) {
+        QString str;
+        for (int j = 0; j < uniTable->at(i).size(); ++j) {
+            str += uniTable->at(i).at(j);
+        }
+        qDebug() << str;
+    }
 
 }
 
-
-
-
 void UniversalRelationTable::on_actionCheck_triggered()
 {
-//    qDebug() << wt->rowCount() << wt->columnCount();
+    //repaint all (almost) TableWidget items in white
     for (int i = 0; i < wt->rowCount() - 1 ; ++i) {
         for (int j = 0; j < wt->columnCount(); ++j) {
             QTableWidgetItem *item = wt->item(i, j);
@@ -222,5 +207,5 @@ void UniversalRelationTable::on_actionCheck_triggered()
         }
     }
 
-    this->validation();
+    this->tuplesValidation();
 }
