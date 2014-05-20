@@ -162,7 +162,7 @@ void Storage::startNormalization()
 
 const QString &Storage::getOutputText(QString &rOutText) const
 {
-    rOutText="<h3 align= \"center\">Cхемы отношений:</h3>";
+    rOutText="<h3 align= \"center\">Cхема отношений:</h3>";
 
     for (int i = 0; i < graphs->size(); ++i) {
         for (int j = 0; j < graphs->at(i)->size(); ++j) {

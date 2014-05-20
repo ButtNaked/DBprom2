@@ -48,7 +48,7 @@
    </property>
    <widget class="QMenu" name="menuOptions">
     <property name="title">
-     <string>Options</string>
+     <string>Настроики</string>
     </property>
     <addaction name="actionCheck"/>
    </widget>

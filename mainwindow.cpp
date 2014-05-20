@@ -103,6 +103,10 @@ void MainWindow::on_actionOpen_File_triggered()
     qDebug() << fileName << "opened.";
 
     on_normButton_clicked();
+
+    storage->updateSuperKey();
+    if (!storage->getSuperKeytoString().isEmpty())
+        ui->masterKeyLabel->setText(QString(tr("Ключ универсального отношения: ")) += storage->getSuperKeytoString());
 }
 
 void MainWindow::on_actionSave_ass_triggered()
