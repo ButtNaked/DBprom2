@@ -151,6 +151,7 @@ void UniversalRelationTable::checkRule(Rule &rRule) //method cheking rule and pa
         }
 
     // If flag is not true, paint appopriate tableWidget items
+        qDebug() << rule.keys << rule.attr;
         if (!tupleValidFlag)  {
             for (int n = 0; n < tupleRowsPos.size(); ++n) {
                 QBrush redBackground(Qt::red);
@@ -176,14 +177,14 @@ void UniversalRelationTable::updateTable(QTableWidgetItem* rItem)
         uniTable->append(vector);
     }
 
-    qDebug() << "UniTable";
-    for (int i = 0; i < uniTable->size(); ++i) {
-        QString str;
-        for (int j = 0; j < uniTable->at(i).size(); ++j) {
-            str += uniTable->at(i).at(j);
-        }
-        qDebug() << str;
-    }
+//    qDebug() << "UniTable";
+//    for (int i = 0; i < uniTable->size(); ++i) {
+//        QString str;
+//        for (int j = 0; j < uniTable->at(i).size(); ++j) {
+//            str += uniTable->at(i).at(j);
+//        }
+//        qDebug() << str;
+//    }
 
 }
 

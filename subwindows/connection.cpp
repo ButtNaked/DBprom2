@@ -184,14 +184,14 @@ void Connection::addSimpleConnection(const QString& currentNum, const QString& c
     for (int i = 0; i < attrTable->size(); ++i) {
         if ( currentNum == (*attrTable)[i][0] ) {
             strM = (*attrTable)[i][1];
-            qDebug()<<"strM"<< strM;
+            //qDebug()<<"strM"<< strM;
             break;
         }
     }
     for (int i = 0; i < attrTable->size(); ++i) {
         if ( currentNum2 == (*attrTable)[i][0] ) {
             strS = (*attrTable)[i][1];
-            qDebug()<<"strS"<< strS;
+            //qDebug()<<"strS"<< strS;
             break;
         }
     }

@@ -185,13 +185,16 @@ Matrix& Matrix::operator=(Matrix& in)
 
 bool Matrix::operator==(Matrix& rh)
 {
-    if (this->x != rh.x || this->y != rh.y ) return false;
+//    if (this->x != rh.x) return false;
 
-    for (int i = 1; i < x; ++i) {
-        for (int j = 1; j < y; ++j) {
-            if ((*this)[i][j] != rh[i][j]) return false;
-        }
-    }
+//    int max = this->x;
 
-    return true;
+//    for (int i = 1; i < max; ++i) {
+//        for (int j = 1; j < max; ++j) {
+//            if ((*this)[i][j] != rh[i][j]) return false;
+//        }
+//    }
+
+      return false;
+
 }
