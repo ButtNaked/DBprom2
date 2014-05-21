@@ -16,6 +16,16 @@ void MyScene::fillScene()
 
     this->clear();
     list.clear();
+
+    if (graphs->isEmpty()) {
+            qDebug() << "MyScene::fillScene graphs is empty";
+            return;
+        }
+    else if (graphs->at(0)->isEmpty()) {
+        qDebug() << "MyScene::fillScene graphs->at(0) is empty";
+        return;
+    }
+
     this->makeArrowTable();
 
     for (int i = 0; i < graphs->size(); ++i) {
@@ -125,7 +135,7 @@ void MyScene::fillScene()
 }
 
 void MyScene::makeArrowTable()
-{
+{   
     arrowTable.clear();
     int startTableCounter  = 0;
 

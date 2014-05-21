@@ -32,9 +32,10 @@ private:
     Storage *storage;
     QVector<QVector<QString> > *attrTable;
     QVector<QVector<int> > *vMatrix;
-    QComboBox *cb;
-    QComboBox *cb2;
+QVector<QVector<QComboBox*>> ptrComboBoxes;
     QTableWidget *tw;
+
+    void addSimpleConnection(const QString &currentNum, const QString &currentNum2) const;
 };
 
 #endif // CONNECTION_H

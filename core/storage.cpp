@@ -49,7 +49,9 @@ void Storage::createMatrix()
 
 }
 
-Storage::Storage()
+Storage::Storage(QObject *parent):
+    QObject(parent)
+
 {
     vMatrix = new QVector<QVector<int> > (1, QVector<int>(1, 0));
     attrTable = new QVector<QVector<QString> >;
@@ -146,10 +148,13 @@ void Storage::startNormalization()
 
     graphs->clear();
 
-    createMatrix();
+    if (!checkingData()) {
+        qDebug() << "Checking is failed\n";
+        return;
+    }
 
+    createMatrix();
     Normalization norm(matrix, graphs);
-    this->normalizationUpdated();
 
     qDebug() << "*******************************";
     for (int i = 0; i < graphs->size(); ++i) {
@@ -232,19 +237,21 @@ QVector<QVector<QString> > *Storage::getUniTable() const
     return uniTable;
 }
 
-bool Storage::isUpToDate() const
+bool Storage::isNormalizeUpdated() const
 {
     return upToDate;
 }
 
-void Storage::somethingChanged()
+void Storage::setNormalizeChanged()
 {
-    upToDate = false;
+    if (upToDate == true)
+        upToDate = false;
 }
 
-void Storage::normalizationUpdated()
+void Storage::setNormalizeUpToDate()
 {
-    upToDate = true;
+    if (upToDate == false)
+        upToDate = true;
 }
 
 const QVector<int>& Storage::getSuperKey() const
@@ -271,7 +278,8 @@ QString Storage::getSuperKeytoString() const
    for (int q = 0; q < superKey.size(); ++q) {
        for (int i = 0; i < attrTable->size(); ++i) {
            if ( (*attrTable)[i][0] == QString::number(superKey[q]) )   {
-                superKeyString += (*attrTable)[i][1] += " ";
+                superKeyString += (*attrTable)[i][1];
+                superKeyString += " ";
            }
        }
    }
@@ -279,7 +287,7 @@ QString Storage::getSuperKeytoString() const
    return superKeyString;
 }
 
-void Storage::setdbName(QString &rdbName)
+void Storage::setdbName(const QString &rdbName)
 {
     dbName = rdbName;
 }
@@ -287,6 +295,43 @@ void Storage::setdbName(QString &rdbName)
 const QString &Storage::getdbName() const
 {
     return dbName;
+}
+
+void Storage::clear()
+{
+    vMatrix->clear();
+    attrTable->clear();
+    uniTable->clear();
+    superKey.clear();
+    dbName.clear();
+    qDebug() << "Storage has been cleared";
+}
+
+bool Storage::checkingData()
+{
+    if (attrTable->isEmpty() || vMatrix->isEmpty()) {
+        qDebug() << "Storage::checkingData, Data is not valid.";
+        return false;
+    }
+
+    if (vMatrix->size() <= 2)   {
+        qDebug() << "Матрица пуста или состоит из одного атрибута.";
+        return false;
+    }
+
+    int limit = vMatrix->size();
+    bool connectionNotExist = true;
+    for (int i = 1; i < limit; ++i) {
+        for (int j = 1; j < limit; ++j) {
+            if( (*vMatrix)[i][j] == 1) connectionNotExist = false;
+        }
+    }
+
+    if (connectionNotExist) {
+        return false;
+    }
+
+    return true;
 }
 
 

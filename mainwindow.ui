@@ -136,9 +136,11 @@
     <property name="title">
      <string>Меню</string>
     </property>
+    <addaction name="actionNew_data_base_scheme"/>
     <addaction name="actionOpen_File"/>
     <addaction name="actionSave_File"/>
     <addaction name="actionSave_ass"/>
+    <addaction name="action"/>
     <addaction name="actionAbout"/>
     <addaction name="actionExit"/>
    </widget>
@@ -205,6 +207,21 @@
    </property>
    <property name="text">
     <string>Russian</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>Изменить название БД</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>Создать новую бд</string>
+   </property>
+  </action>
+  <action name="actionNew_data_base_scheme">
+   <property name="text">
+    <string>Новый файл</string>
    </property>
   </action>
  </widget>

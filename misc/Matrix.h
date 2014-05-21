@@ -51,5 +51,6 @@ public:
 	void addIndexRowCol(myint**);
     myint getX();
     myint getY();
+    bool operator==(Matrix& rh);
 
 };

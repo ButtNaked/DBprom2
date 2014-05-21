@@ -88,7 +88,7 @@ void Attribute::on_addAttrButton_clicked()
     }
 
     //Данные были изменены
-    storage->somethingChanged();
+    storage->setNormalizeChanged();
 
     //добавление нового атрибута в uniTable
     if (uniTable->isEmpty()) return;
@@ -137,7 +137,7 @@ void Attribute::on_delAttrButton_clicked()
     }
 
     //Данные были изменены
-    storage->somethingChanged();
+    storage->setNormalizeChanged();
 
     //Удаление из uniTable
     if (uniTable->isEmpty()) return;

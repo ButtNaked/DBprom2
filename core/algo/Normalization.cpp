@@ -4,7 +4,8 @@ myint Iteration::iteration_counter=0;
 
 
 Iteration::Iteration(Matrix *pInMainM):
-    pMainM(pInMainM)
+    pMainM(pInMainM),
+    looped(false)
 {
     iteration_counter++;
 
@@ -66,6 +67,12 @@ bool Iteration::getArrayIsNull()
     return arrayIsNull;
 }
 
+bool Iteration::isLooped()
+{
+    cout << "looped = " << looped;
+    return looped;
+}
+
 
 Normalization::Normalization(Matrix* in, QVector<QVector<Matrix *> *> *rGraphs):
     pInMain(in)
@@ -79,7 +86,7 @@ Normalization::Normalization(Matrix* in, QVector<QVector<Matrix *> *> *rGraphs):
         b=new Iteration(pRes);
         delete pRes;
         rGraphs->append( b->getGraphs());
-        if (b->getArrayIsNull())	{
+        if (b->getArrayIsNull() || b->isLooped())	{
             delete b;
               return;
         }

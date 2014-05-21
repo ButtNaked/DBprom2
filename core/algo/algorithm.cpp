@@ -104,6 +104,7 @@ void Iteration::preparing()
 	cout << "Sets";
 	cout << "\n";
 	(*pSetsM).show();
+
 	//-------------------------------------------------------------
 	//Создание матрицы 2НФ
 	//------------------------------------------------------------
@@ -114,23 +115,12 @@ void Iteration::preparing()
 	pSecondM= new Matrix (secondM_x, secondM_y);     
 	
 
-	pSecondM -> fillWithNumber(8);
+    pSecondM -> fillWithNumber(8);
 	//----------------------------------------
 	// Цикл заполнения матрицы 2НФ на основе матрцы наборов, матрицы смеженности и всмомогательной матрицы headerM                                                            //Зубодробящая логика цикла
 	//----------------------------------------
 
-
-
-
 	pSecondM -> addIndexRowCol(pMainMcr->getPtr());
-
-
-
-
-
-
-
-
 
 
 	for (int i=0; i<setsM_x;i++)	{
@@ -468,6 +458,10 @@ void Iteration::thirdNF()
         pThirdM = 0; // nullptr
 	}
 
+    if (*pOutM == *pMainM)  {
+        looped = true;
+        cout << "В матрице петля\n";
+    }
 
 
 }

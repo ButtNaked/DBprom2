@@ -5,8 +5,10 @@
 
 #define cout qDebug()
 
-class Normalization
+class Normalization : public QObject
 {
+    Q_OBJECT
+
 private:
     Matrix *pInMain;
     QVector<QVector<Matrix *> *> *graphs;
@@ -14,6 +16,8 @@ private:
 public:
     Normalization(Matrix*, QVector<QVector<Matrix *> *> *rGraphs);
     ~Normalization();
+signals:
+
 };
 
 class Iteration
@@ -31,6 +35,7 @@ class Iteration
     QVector<Matrix *> *vRes;
 
     bool arrayIsNull;
+    bool looped;
 
 public:
     Iteration(Matrix *pInMainM);
@@ -44,5 +49,6 @@ public:
     QVector<Matrix *> *getGraphs();
     Matrix* getRemains();
     bool getArrayIsNull();
+    bool isLooped();
 };
 

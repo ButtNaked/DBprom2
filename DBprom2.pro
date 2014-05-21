@@ -24,7 +24,9 @@ SOURCES += main.cpp \
     subwindows/universalrelationtable.cpp \
     core/myscene.cpp \
     core/sceneElem/arrow.cpp \
-    core/sceneElem/mytable.cpp
+    core/sceneElem/mytable.cpp \
+    subwindows/dbnamedialog.cpp \
+    subwindows/newdialog.cpp
 
 HEADERS  += mainwindow.h \
     core/storage.h \
@@ -36,13 +38,17 @@ HEADERS  += mainwindow.h \
     subwindows/universalrelationtable.h \
     core/myscene.h \
     core/sceneElem/arrow.h \
-    core/sceneElem/mytable.h
+    core/sceneElem/mytable.h \
+    subwindows/dbnamedialog.h \
+    subwindows/newdialog.h
 
 
 FORMS    += mainwindow.ui \
     subwindows/attribute.ui \
     subwindows/connection.ui \
-    subwindows/universalrelationtable.ui
+    subwindows/universalrelationtable.ui \
+    subwindows/dbnamedialog.ui \
+    subwindows/newdialog.ui
 
 
 

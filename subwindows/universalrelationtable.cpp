@@ -66,7 +66,7 @@ void UniversalRelationTable::fillTableWidget()
 void UniversalRelationTable::tuplesValidation()
 {
     //Check is storage up to date
-    if(!storage->isUpToDate()) {
+    if(!storage->isNormalizeUpdated()) {
         storage->startNormalization();
         //QMessageBox::information(this, tr(""), tr("Обновленно."));
     }

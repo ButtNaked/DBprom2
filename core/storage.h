@@ -17,22 +17,25 @@
 
 
 
-class Storage
+class Storage : public QObject
 {
+    Q_OBJECT
+
 private:
     bool upToDate = false;
     QVector<QVector<int> > *vMatrix;
     Matrix *matrix;
     QVector<QVector<QString> > *attrTable;
     QVector<QVector<Matrix*>*>* graphs;
-    void createMatrix();
     QVector<QVector<QString>> *uniTable;
     QVector<int> superKey;
     QString dbName;
 
+    void createMatrix();
+    bool checkingData();
 
 public:
-    Storage();
+    Storage(QObject *parent = 0);
     ~Storage();
     QVector<QVector<int> > *getVMatrix();
     Matrix *getMatrix();
@@ -47,16 +50,16 @@ public:
     QString getTextByNumber(int rNum) const;
     QList<QListWidget *> *getWidgetTableList() const;
     QVector<QVector<QString> > *getUniTable() const;
-    bool isUpToDate() const;
-    void somethingChanged();
-    void normalizationUpdated();
+    bool isNormalizeUpdated() const;
+    void setNormalizeChanged();
+    void setNormalizeUpToDate();
     const QVector<int>& getSuperKey() const;
     void updateSuperKey();
     QString getSuperKeytoString() const;
-    void setdbName(QString & rdbName);
+    void setdbName(const QString &rdbName);
     const QString& getdbName() const;
-
-
+    void clear();
+signals:
 
 };
 

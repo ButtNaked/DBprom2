@@ -93,7 +93,7 @@ void Matrix::fillWithNumber(myint num)
 
 void Matrix::addIndexRowCol(myint **MainMcr_ptr)
 {
-	arr[0][0]=0;
+    arr[0][0]=0;
 	for (int i=1; i<x; i++)	
 		arr[i][0]=MainMcr_ptr[i][0];
 
@@ -181,4 +181,17 @@ Matrix& Matrix::operator=(Matrix& in)
 			(*this)[i][j]=in[i][j];
 
 	return *this;
+}
+
+bool Matrix::operator==(Matrix& rh)
+{
+    if (this->x != rh.x || this->y != rh.y ) return false;
+
+    for (int i = 1; i < x; ++i) {
+        for (int j = 1; j < y; ++j) {
+            if ((*this)[i][j] != rh[i][j]) return false;
+        }
+    }
+
+    return true;
 }

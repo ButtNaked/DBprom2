@@ -20,8 +20,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->masterKeyLabel->setText("Введите связи между атрибутами для отображения ключа универсального отношения.");
 
     //QSettings *settings = new QSettings("settings.conf",QSettings::IniFormat, this);
+    this->show();
 
-
+    NewDialog *wd = new NewDialog(this, this, storage);
+    wd->show();
 }
 
 MainWindow::~MainWindow()
@@ -40,11 +42,19 @@ void MainWindow::showOutput()
 
 void MainWindow::saveFile()
 {
-    QFile file(fileName);
+    QFile file(filePath);
     file.open(QIODevice::WriteOnly);
     QDataStream out(&file);
     out << version << *(storage->getAttrTable())
-    << *(storage->getVMatrix()) << *(storage->getUniTable());
+        << *(storage->getVMatrix()) << *(storage->getUniTable()) << storage->getdbName();
+}
+
+void MainWindow::reset()
+{
+    scene->clear();
+    storage->clear();
+    ui->textEdit->clear();
+    ui->masterKeyLabel->setText("Введите связи между атрибутами для отображения ключа универсального отношения.");
 }
 
 void MainWindow::on_addAttrButton_clicked()
@@ -76,22 +86,23 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_actionSave_File_triggered()
 {
     saveFile();
-    qDebug() << fileName << "saved.";
+    qDebug() << filePath << "saved.";
 
 }
 
 void MainWindow::on_actionOpen_File_triggered()
 {
-    fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("Files (*.dbp)"));
+    filePath = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("Files (*.dbp)"));
 
-    QFile file(fileName);
+    QFile file(filePath);
     file.open(QIODevice::ReadOnly);
     QDataStream in(&file);
     QString outVersion;
     QVector<QVector<QString> > outAttrTable;
     QVector<QVector<int> > outVMatrix;
     QVector<QVector<QString> > outUniTable;
-    in >> outVersion >> outAttrTable >> outVMatrix >> outUniTable;
+    QString outdbName;
+    in >> outVersion >> outAttrTable >> outVMatrix >> outUniTable >> outdbName;
     if (outVersion != version) {
         qDebug() << "Разные версии";
         return;
@@ -100,8 +111,10 @@ void MainWindow::on_actionOpen_File_triggered()
     storage->setAttrTable(outAttrTable);
     storage->setVMatrix(outVMatrix);
     storage->setUniTable(outUniTable);
-    qDebug() << fileName << "opened.";
+    storage->setdbName(outdbName);
+    qDebug() << filePath << "opened.";
 
+    if (storage->getAttrTable()->isEmpty() || storage->getVMatrix()->isEmpty()) return;
     on_normButton_clicked();
 
     storage->updateSuperKey();
@@ -111,9 +124,9 @@ void MainWindow::on_actionOpen_File_triggered()
 
 void MainWindow::on_actionSave_ass_triggered()
 {
-    fileName = QFileDialog::getSaveFileName(this, tr("Save file"), "untitled.dbp", tr("DB prom files (*.dbp)"));
+    filePath = QFileDialog::getSaveFileName(this, tr("Save file"), "untitled.dbp", tr("DB prom files (*.dbp)"));
     saveFile();
-    qDebug() << fileName << "saved ass...";
+    qDebug() << filePath << "saved ass...";
 }
 
 void MainWindow::on_actionAbout_triggered()
@@ -130,4 +143,16 @@ void MainWindow::on_uniRelButton_clicked()
 {
     UniversalRelationTable *wu = new UniversalRelationTable(this, storage);
     wu->show();
+}
+
+void MainWindow::on_action_triggered()
+{
+    DBnameDialog *wdb = new DBnameDialog(this, storage);
+    wdb->show();
+}
+
+void MainWindow::on_actionNew_data_base_scheme_triggered()
+{
+    NewDialog *wd = new NewDialog(this, this, storage);
+    wd->show();
 }
