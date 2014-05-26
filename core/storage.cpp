@@ -135,6 +135,8 @@ void Storage::setUniTable(QVector<QVector<QString> > &inUniTable)
 
 void Storage::startNormalization()
 {
+    Iteration::resetIterationCounter();
+
     for (int i = 0; i < graphs->size(); ++i) {
         QVector<Matrix *> *pTemp2;
         for (int j = 0; j < graphs->at(i)->size(); ++j) {
@@ -154,7 +156,9 @@ void Storage::startNormalization()
     }
 
     createMatrix();
+    matrix->show();
     Normalization norm(matrix, graphs);
+    Iteration::resetIterationCounter();
 
     qDebug() << "*******************************";
     for (int i = 0; i < graphs->size(); ++i) {
@@ -254,14 +258,11 @@ void Storage::setNormalizeUpToDate()
         upToDate = true;
 }
 
-const QVector<int>& Storage::getSuperKey() const
+const QString& Storage::getSuperKeyString()
 {
-    return superKey;
-}
+    if (upToDate) return superKeyString;
 
-void Storage::updateSuperKey()
-{
-    superKey.clear();
+    QVector<int> superKey;
     for (int i = 1; i < vMatrix->size(); ++i) {
         for (int j = 1; j < vMatrix->size(); ++j) {
             if ( vMatrix->at(i).at(j) == 1) break;
@@ -270,11 +271,8 @@ void Storage::updateSuperKey()
             }
         }
     }
-}
 
-QString Storage::getSuperKeytoString() const
-{
-   QString superKeyString;
+   superKeyString.clear();
    for (int q = 0; q < superKey.size(); ++q) {
        for (int i = 0; i < attrTable->size(); ++i) {
            if ( (*attrTable)[i][0] == QString::number(superKey[q]) )   {
@@ -284,6 +282,9 @@ QString Storage::getSuperKeytoString() const
        }
    }
 
+
+   superKeyString = QString(tr("Ключ универсального отношения: ")) + superKeyString;
+
    return superKeyString;
 }
 
@@ -292,17 +293,18 @@ void Storage::setdbName(const QString &rdbName)
     dbName = rdbName;
 }
 
-const QString &Storage::getdbName() const
+const QString& Storage::getdbName() const
 {
     return dbName;
 }
 
 void Storage::clear()
 {
-    vMatrix->clear();
     attrTable->clear();
+    vMatrix->clear();
+    vMatrix->append(QVector<int>(1, 0));
     uniTable->clear();
-    superKey.clear();
+    upToDate=false;
     dbName.clear();
     qDebug() << "Storage has been cleared";
 }

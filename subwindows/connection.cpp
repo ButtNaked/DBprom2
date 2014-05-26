@@ -1,5 +1,6 @@
 #include "subwindows/connection.h"
 #include "ui_connection.h"
+#include "mainwindow.h"
 
 Connection::Connection(QWidget *parent, Storage *rStorage) :
     QDialog(parent),
@@ -7,6 +8,7 @@ Connection::Connection(QWidget *parent, Storage *rStorage) :
     storage(rStorage)
 {
     ui->setupUi(this);
+    this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle(tr("Добавление связи [DB prom]"));
 
     attrTable = storage->getAttrTable();
@@ -78,6 +80,8 @@ Connection::Connection(QWidget *parent, Storage *rStorage) :
     }
 
     tw->sortItems(1);
+
+    connect(this, SIGNAL(updateMasterLabel()), parent, SLOT(updateSuperKeyLabel()));
 }
 
 Connection::~Connection()
@@ -131,7 +135,7 @@ void Connection::on_addConButton_clicked()
         for (int j = 0; j < 4; ++j) {
             if ( difficultConnection[0][i] != empty &&  difficultConnection[1][j] != empty )  {
               addSimpleConnection(difficultConnection[0][i], difficultConnection[1][j]);
-              //qDebug() << difficultConnection[0][i] << difficultConnection[1][j];
+//              qDebug() << difficultConnection[0][i] << difficultConnection[1][j];
             }
         }
     }
@@ -175,6 +179,7 @@ void Connection::on_deleteConButton_clicked()
 
 void Connection::on_cancelButton_clicked()
 {
+    emit updateMasterLabel();
     close();
 }
 

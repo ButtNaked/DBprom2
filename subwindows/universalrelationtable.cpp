@@ -9,7 +9,9 @@ UniversalRelationTable::UniversalRelationTable(QWidget *parent, Storage *rStorag
     storage(rStorage)
 {
     ui->setupUi(this);
+    this->setWindowModality(Qt::ApplicationModal);
     this->setCentralWidget(ui->tableWidget);
+    this->setWindowTitle(tr("Универсальное отношение [DB prom]"));
 
     wt = ui->tableWidget;
     wt->setSortingEnabled(false);
@@ -91,6 +93,8 @@ void UniversalRelationTable::tuplesValidation()
 
     //Calling checkRule method for every rule
     foreach (Rule rule, rulesList) {
+        qDebug() << rule.keys << rule.attr;
+        qDebug() << "******";
         checkRule(rule);
     }
 
@@ -151,7 +155,7 @@ void UniversalRelationTable::checkRule(Rule &rRule) //method cheking rule and pa
         }
 
     // If flag is not true, paint appopriate tableWidget items
-        qDebug() << rule.keys << rule.attr;
+        //qDebug() << rule.keys << rule.attr;
         if (!tupleValidFlag)  {
             for (int n = 0; n < tupleRowsPos.size(); ++n) {
                 QBrush redBackground(Qt::red);

@@ -45,6 +45,7 @@ public:
     void thirdNF();
     void construction();
     void preparing();
+    static void resetIterationCounter();
 
     QVector<Matrix *> *getGraphs();
     Matrix* getRemains();

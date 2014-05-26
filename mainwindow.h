@@ -37,9 +37,13 @@ public:
     void reset();
 
 public slots:
+    void updateSuperKeyLabel();
+
     void on_actionOpen_File_triggered();
 
     void on_actionSave_ass_triggered();
+
+    void updateWindowTitle();
 
 private slots:
     void on_addAttrButton_clicked();

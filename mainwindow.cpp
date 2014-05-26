@@ -7,11 +7,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QString title(tr("Main window [DB prom] v"));
-    title += version;
-    this->setWindowTitle(title);
-
     storage = new Storage();
+    this->updateWindowTitle();
+
     ui->textEdit->setReadOnly(1);
 
     scene = new MyScene(storage);
@@ -57,6 +55,11 @@ void MainWindow::reset()
     ui->masterKeyLabel->setText("Введите связи между атрибутами для отображения ключа универсального отношения.");
 }
 
+void MainWindow::updateSuperKeyLabel()
+{
+    ui->masterKeyLabel->setText(storage->getSuperKeyString());
+}
+
 void MainWindow::on_addAttrButton_clicked()
 {
     Attribute *wa = new Attribute(this, storage);
@@ -67,9 +70,6 @@ void MainWindow::on_addConButton_clicked()
 {
     Connection *wc = new Connection(this, storage);
     wc->show();
-    storage->updateSuperKey();
-    if (!storage->getSuperKeytoString().isEmpty())
-        ui->masterKeyLabel->setText(QString(tr("Ключ универсального отношения: ")) += storage->getSuperKeytoString());
 }
 
 void MainWindow::on_normButton_clicked()
@@ -80,7 +80,7 @@ void MainWindow::on_normButton_clicked()
 
 void MainWindow::on_pushButton_clicked()
 {
-    close();
+    exit(EXIT_SUCCESS);
 }
 
 void MainWindow::on_actionSave_File_triggered()
@@ -117,9 +117,8 @@ void MainWindow::on_actionOpen_File_triggered()
     if (storage->getAttrTable()->isEmpty() || storage->getVMatrix()->isEmpty()) return;
     on_normButton_clicked();
 
-    storage->updateSuperKey();
-    if (!storage->getSuperKeytoString().isEmpty())
-        ui->masterKeyLabel->setText(QString(tr("Ключ универсального отношения: ")) += storage->getSuperKeytoString());
+    updateSuperKeyLabel();
+    updateWindowTitle();
 }
 
 void MainWindow::on_actionSave_ass_triggered()
@@ -129,6 +128,12 @@ void MainWindow::on_actionSave_ass_triggered()
     qDebug() << filePath << "saved ass...";
 }
 
+void MainWindow::updateWindowTitle()
+{
+    QString title = storage->getdbName() + tr(" [DB prom]") + " v" + version + "  " + filePath;
+    this->setWindowTitle(title);
+}
+
 void MainWindow::on_actionAbout_triggered()
 {
     QMessageBox::about(this, tr("О программе..."), tr("Программа нормализации реляционных баз данных. 2014. Масленников Роман. E-mail: m3angreen@gmail.com"));
@@ -136,7 +141,7 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::on_actionExit_triggered()
 {
-    close();
+    exit(EXIT_SUCCESS);
 }
 
 void MainWindow::on_uniRelButton_clicked()

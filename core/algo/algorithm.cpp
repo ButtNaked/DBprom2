@@ -79,6 +79,7 @@ void Iteration::preparing()
 	cout << "MainMcr";
 	cout << "\n";
 	pMainMcr -> show();
+    cout << "keyNodeCounter:" << keyNodeCounter << "\n";
 
 	//---------------------------------------------------------------------------------------------------------
 	//--------Создание матрицы наборов-------
@@ -152,6 +153,11 @@ void Iteration::preparing()
 	cout << "\n";
 	pSecondM -> show();
 
+}
+
+void Iteration::resetIterationCounter()
+{
+   iteration_counter = 0;
 }
 
 void Iteration::secondNF()

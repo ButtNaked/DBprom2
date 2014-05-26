@@ -7,9 +7,12 @@ DBnameDialog::DBnameDialog(QWidget *parent, Storage *_storage) :
     storage(_storage)
 {
     ui->setupUi(this);
+    this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle(tr("Введите название базы данных"));
     ui->lineEdit->setText(storage->getdbName());
     ui->lineEdit->selectAll();
+
+    connect (this, SIGNAL(dbNameChanged()), parent, SLOT(updateWindowTitle()));
 }
 
 DBnameDialog::~DBnameDialog()
@@ -20,6 +23,7 @@ DBnameDialog::~DBnameDialog()
 void DBnameDialog::on_pushButton_OK_clicked()
 {
     storage->setdbName(ui->lineEdit->text());
+    emit dbNameChanged();
     close();
 }
 

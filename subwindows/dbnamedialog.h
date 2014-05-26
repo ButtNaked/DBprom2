@@ -25,6 +25,8 @@ private slots:
 private:
     Ui::DBnameDialog *ui;
     Storage* storage;
+signals:
+    void dbNameChanged();
 };
 
 #endif // DBNAMEDIALOG_H

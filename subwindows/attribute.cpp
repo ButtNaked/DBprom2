@@ -7,6 +7,7 @@ Attribute::Attribute(QWidget *parent, Storage *rStorage) :
     storage(rStorage)
 {
     ui->setupUi(this);
+    this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle(tr("Добавление атрибута [DB prom]"));
 
     lw = ui->listWidget;

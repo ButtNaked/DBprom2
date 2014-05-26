@@ -30,8 +30,7 @@ void NewDialog::on_pushButton_OK_clicked()
 
 void NewDialog::on_pushButton_Exit_clicked()
 {
-    this->close();
-    mainwindow->close();
+    exit(EXIT_SUCCESS);
 }
 
 void NewDialog::on_pushButton_OpenFIle_clicked()

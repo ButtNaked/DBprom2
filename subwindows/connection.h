@@ -36,6 +36,9 @@ QVector<QVector<QComboBox*>> ptrComboBoxes;
     QTableWidget *tw;
 
     void addSimpleConnection(const QString &currentNum, const QString &currentNum2) const;
+
+signals:
+    void updateMasterLabel();
 };
 
 #endif // CONNECTION_H
