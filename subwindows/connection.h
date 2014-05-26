@@ -27,6 +27,8 @@ private slots:
 
     void on_cancelButton_clicked();
 
+    void on_resetComBoxesButton_clicked();
+
 private:
     Ui::Connection *ui;
     Storage *storage;
@@ -36,6 +38,7 @@ QVector<QVector<QComboBox*>> ptrComboBoxes;
     QTableWidget *tw;
 
     void addSimpleConnection(const QString &currentNum, const QString &currentNum2) const;
+    void deleteSimpleConnection(int index_X, int index_Y);
 
 signals:
     void updateMasterLabel();

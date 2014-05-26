@@ -2,6 +2,7 @@
 #include "ui_connection.h"
 #include "mainwindow.h"
 
+
 Connection::Connection(QWidget *parent, Storage *rStorage) :
     QDialog(parent),
     ui(new Ui::Connection),
@@ -14,6 +15,7 @@ Connection::Connection(QWidget *parent, Storage *rStorage) :
     attrTable = storage->getAttrTable();
     vMatrix = storage->getVMatrix();
     tw = ui->tableWidget;
+    tw->setAlternatingRowColors(true);
 
     QVector<QComboBox*> vecM;
     vecM.append(ui->comboBox_M1);
@@ -29,8 +31,8 @@ Connection::Connection(QWidget *parent, Storage *rStorage) :
     ptrComboBoxes.append(vecS);
 
     tw->setColumnCount(2);
-    tw->setColumnWidth(0, 210);
-    tw->setColumnWidth(1, 210);
+    tw->setColumnWidth(0, 306);
+    tw->setColumnWidth(1, 153);
     tw->setRowCount(0);
     tw->setHorizontalHeaderLabels(QStringList() << tr("Основной") << tr("Зависимый"));
 
@@ -54,32 +56,39 @@ Connection::Connection(QWidget *parent, Storage *rStorage) :
     ptrComboBoxes[1][0]->setCurrentIndex(1);
 
     for (int i = 1; i < vMatrix->size(); ++i) {
-        for (int j = 1; j < vMatrix->size(); ++j) {
-            if ( (*vMatrix)[i][j] == 1) {
-                int numberX=(*vMatrix)[i][0];
-                int numberY=(*vMatrix)[0][j];
-                QString strM;
-                QString strS;
-                for (int m = 0; m < attrTable->size(); ++m) {
-                    if ( numberX == ((*attrTable)[m][0]).toInt() )   {
-                        strS=(*attrTable)[m][1];
-                    }
-                    if ( numberY == ((*attrTable)[m][0]).toInt() )   {
-                        strM=(*attrTable)[m][1];
-                    }
+        bool isAttributeDependable = false;
+        for (int j = 1; j < vMatrix->size(); ++j)   {
+            if ((*vMatrix)[i][j] == 1) isAttributeDependable = true;
+         }
+        if (isAttributeDependable)  {
+            QString strM;
+            QString strS;
+            QVariantList list;
+
+            strS = storage->getTextByNumber( (*vMatrix)[i][0] );
+
+            for (int j = 1; j < vMatrix->size(); ++j) {
+                if ((*vMatrix)[i][j] == 1) {
+                    strM += storage->getTextByNumber((*vMatrix)[0][j]) + " ";
+                    list.append(QVariant((*vMatrix)[0][j]));
                 }
-                QTableWidgetItem *item1 = new QTableWidgetItem(strM);
-                QTableWidgetItem *item2 = new QTableWidgetItem(strS);
-
-                tw->insertRow(tw->rowCount());
-
-                tw->setItem(tw->rowCount()-1, 0, item1);
-                tw->setItem(tw->rowCount()-1, 1, item2);
             }
+
+            QTableWidgetItem *item1 = new QTableWidgetItem(strM);
+            item1->setData(Qt::UserRole, QVariant(list));
+            QTableWidgetItem *item2 = new QTableWidgetItem(strS);
+            item2->setData(Qt::UserRole, QVariant((*vMatrix)[i][0]));
+
+            tw->insertRow(tw->rowCount());
+            tw->setRowHeight(tw->rowCount()-1, 50);
+            tw->setItem(tw->rowCount()-1, 0, item1);
+            tw->setItem(tw->rowCount()-1, 1, item2);
         }
     }
 
-    tw->sortItems(1);
+
+    tw->sortByColumn(1, Qt::AscendingOrder);
+    tw->resizeRowsToContents();
 
     connect(this, SIGNAL(updateMasterLabel()), parent, SLOT(updateSuperKeyLabel()));
 }
@@ -130,18 +139,59 @@ void Connection::on_addConButton_clicked()
             }
         }
     }
-    //Вызов функции заполнения для каждого пары атрибутов.
+    //Вызов функции заполнения для каждой пары атрибутов.
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
             if ( difficultConnection[0][i] != empty &&  difficultConnection[1][j] != empty )  {
               addSimpleConnection(difficultConnection[0][i], difficultConnection[1][j]);
 //              qDebug() << difficultConnection[0][i] << difficultConnection[1][j];
+
             }
         }
     }
+    //Заполнение TableWidget
+    for (int i = 0; i < 4; ++i) {
+        if (difficultConnection[1][i] != empty ) {
+            for (int j = 0; j < tw->rowCount(); ++j) {
+                    if ( tw->item(j, 1)->data(Qt::UserRole).value<int>() == difficultConnection[1][i].toInt() )   {
+                    tw->removeRow(j);
+                    //qDebug() << "removed row: " << j;
+                }
 
+            }
+
+            QString strM;
+            QString strS;
+            QVariantList list;
+            strS = storage->getTextByNumber(difficultConnection[1][i].toInt());
+
+            int currentNum = -1;
+            for (int j = 1; j < vMatrix->size(); ++j) {
+                if ( (*vMatrix)[j][0] == difficultConnection[1][i].toInt()) currentNum = j;
+            }
+
+            for (int j = 1; j < vMatrix->size(); ++j) {
+                if ( (*vMatrix)[currentNum][j] == 1)    {
+                    strM += storage->getTextByNumber( (*vMatrix)[0][j]) + " ";
+                    list.append(QVariant( (*vMatrix)[0][j] ));
+                }
+            }
+
+            QTableWidgetItem *itemM = new QTableWidgetItem(strM);
+            itemM->setData(Qt::UserRole, QVariant(list));
+            QTableWidgetItem *itemS = new QTableWidgetItem(strS);
+            itemS->setData(Qt::UserRole, QVariant(difficultConnection[1][i].toInt()));
+
+            tw->insertRow(tw->rowCount());
+            tw->setRowHeight(tw->rowCount()-1, 50);
+            tw->setItem(tw->rowCount()-1, 0, itemM);
+            tw->setItem(tw->rowCount()-1, 1, itemS);
+        }
+    }
+
+    tw->resizeRowsToContents();
     //tw->scrollToBottom();
-    tw->sortByColumn(1);
+    tw->sortByColumn(1, Qt::AscendingOrder);
 
     storage->setNormalizeChanged();
 }
@@ -153,28 +203,25 @@ void Connection::on_deleteConButton_clicked()
         QMessageBox::information(this, "", tr("Для удаления сначала выберите нужную связь."));
         return;
     }
-    QTableWidgetItem *item1 = tw->takeItem(curRow,0);
-    QTableWidgetItem *item2 = tw->takeItem(curRow,1);
+    QTableWidgetItem *itemM = tw->takeItem(curRow,0);
+    QTableWidgetItem *itemS = tw->takeItem(curRow,1);
     tw->removeRow(curRow);
 
-    QString strM = item1->text();
-    QString strS = item2->text();
-
-    int numberX, numberY;
-
-    for (int i = 0; i < attrTable->size(); ++i) {
-        if (strM == (*attrTable)[i][1])   {
-            numberY=( (*attrTable)[i][0]).toInt()+1;
-        }
-        if (strS == (*attrTable)[i][1])   {
-            numberX=( (*attrTable)[i][0]).toInt()+1;
-        }
-
+    int index_X = itemS->data(Qt::UserRole).value<int>();
+    QVariantList vList = itemM->data(Qt::UserRole).value<QVariantList>();
+    for (int i = 0; i < vList.size(); ++i) {
+        this->deleteSimpleConnection(index_X, vList[i].value<int>());
     }
 
-    (*vMatrix)[numberX][numberY]= 0;
-
     storage->setNormalizeChanged();
+
+//    for (int i = 0; i < vMatrix->size(); ++i) {
+//        QString str;
+//        for (int j = 0; j < vMatrix->size(); ++j) {
+//            str += QString::number( (*vMatrix)[i][j]);
+//        }
+//        qDebug() << str;
+//    }
 }
 
 void Connection::on_cancelButton_clicked()
@@ -200,14 +247,6 @@ void Connection::addSimpleConnection(const QString& currentNum, const QString& c
             break;
         }
     }
-
-    QTableWidgetItem *item1 = new QTableWidgetItem(strM);
-    QTableWidgetItem *item2 = new QTableWidgetItem(strS);
-
-    tw->insertRow(tw->rowCount());
-
-    tw->setItem(tw->rowCount()-1, 0, item1);
-    tw->setItem(tw->rowCount()-1, 1, item2);
     //Добавление связей в vMatrix
 
     int numberX = -1, numberY = -1;
@@ -232,4 +271,28 @@ void Connection::addSimpleConnection(const QString& currentNum, const QString& c
     if ( ( coordX != -1 ) && ( coordY != -1 ) )  {
         (*vMatrix)[coordX][coordY]= 1;
     }   else qDebug() << "vMatrix write error...";
+}
+
+void Connection::deleteSimpleConnection(int index_X, int index_Y)
+{
+    int numberX = -1;
+    int numberY = -1;
+
+    for (int i = 1; i < vMatrix->size(); ++i) {
+        if (index_X == (*vMatrix)[i][0]) numberX = i;
+        if (index_Y == (*vMatrix)[0][i]) numberY = i;
+    }
+
+    (*vMatrix)[numberX][numberY]= 0;
+}
+
+void Connection::on_resetComBoxesButton_clicked()
+{
+    for (int i = 0; i < 2; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            if (i == 1 && j == 0)   ptrComboBoxes[i][j]->setCurrentIndex(1);
+            else    ptrComboBoxes[i][j]->setCurrentIndex(0);
+        }
+    }
+
 }

@@ -130,7 +130,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Введите связи между атрибутами:</string>
+    <string>Список связей:</string>
    </property>
   </widget>
   <widget class="QComboBox" name="comboBox_M2">
@@ -204,6 +204,19 @@
    </property>
    <property name="text">
     <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="resetComBoxesButton">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>550</y>
+     <width>41</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>x</string>
    </property>
   </widget>
  </widget>
