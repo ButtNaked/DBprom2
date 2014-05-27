@@ -31,6 +31,7 @@ private:
     QVector<QVector<QString>> *uniTable;
     QVector<QVector<int> > *vMatrix;
     QVector<QVector<QString> > *attrTable;
+    bool isAllTuplesValid;
 
     void fillTableWidget();     //fill table widget with items
     void tuplesValidation();    //create set of rules for future tuples validation

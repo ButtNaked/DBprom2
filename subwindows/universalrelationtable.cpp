@@ -67,6 +67,7 @@ void UniversalRelationTable::fillTableWidget()
 
 void UniversalRelationTable::tuplesValidation()
 {
+    isAllTuplesValid = true;
     //Check is storage up to date
     if(!storage->isNormalizeUpdated()) {
         storage->startNormalization();
@@ -97,8 +98,12 @@ void UniversalRelationTable::tuplesValidation()
         qDebug() << "******";
         checkRule(rule);
     }
+    if (isAllTuplesValid) {
+        QMessageBox::information(this, tr("Проверка корректности кортежей"), tr("Все кортежи корректны."));
+    }
+    else QMessageBox::information(this, tr("Проверка корректности кортежей"),
+                                  tr("Найдены некорректные кортежи. Красным выделен несовпадающий атрибут кортежа, желтым - его ключ."));
 
-    QMessageBox::information(this, tr(""), tr("Готово."));
 }
 
 void UniversalRelationTable::checkRule(Rule &rRule) //method cheking rule and paint tablewidget items
@@ -157,6 +162,7 @@ void UniversalRelationTable::checkRule(Rule &rRule) //method cheking rule and pa
     // If flag is not true, paint appopriate tableWidget items
         //qDebug() << rule.keys << rule.attr;
         if (!tupleValidFlag)  {
+            isAllTuplesValid = false;
             for (int n = 0; n < tupleRowsPos.size(); ++n) {
                 QBrush redBackground(Qt::red);
                 for (int q = 0; q < rule.keys.size(); ++q) {

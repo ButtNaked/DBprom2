@@ -36,27 +36,22 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-  </widget>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>800</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuOptions">
-    <property name="title">
-     <string>Настроики</string>
-    </property>
-    <addaction name="actionCheck"/>
-   </widget>
-   <addaction name="menuOptions"/>
+   <addaction name="actionCheck"/>
   </widget>
   <action name="actionCheck">
+   <property name="icon">
+    <iconset>
+     <normalon>:/pic/red_dot.png</normalon>
+    </iconset>
+   </property>
    <property name="text">
-    <string>Check</string>
+    <string>Проверить корректность введеных кортежей</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::WindowShortcut</enum>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::TextHeuristicRole</enum>
    </property>
   </action>
  </widget>

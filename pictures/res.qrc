@@ -3,5 +3,6 @@
         <file>key.bmp</file>
         <file>key.png</file>
         <file>foreign.bmp</file>
+        <file>red_dot.png</file>
     </qresource>
 </RCC>
