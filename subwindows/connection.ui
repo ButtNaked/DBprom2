@@ -209,14 +209,14 @@
   <widget class="QPushButton" name="resetComBoxesButton">
    <property name="geometry">
     <rect>
-     <x>420</x>
-     <y>550</y>
-     <width>41</width>
+     <x>400</x>
+     <y>530</y>
+     <width>71</width>
      <height>21</height>
     </rect>
    </property>
    <property name="text">
-    <string>x</string>
+    <string>Сброс</string>
    </property>
   </widget>
  </widget>
