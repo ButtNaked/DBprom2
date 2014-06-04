@@ -1,17 +1,13 @@
 #include "misc/Matrix.h"
 #include <math.h>
 
-Matrix::Matrix(myint x1, myint y1)
+Matrix::Matrix(myint rX, myint rY)
 {
-	x=x1;
-	y=y1;
-
+    x=rX;
+    y=rY;
 	arr= new myint* [x];     
 	for (myint i = 0; i < x; i++)
 		arr[i] = new myint [y];	
-
-
-
 }
 
 
@@ -19,10 +15,7 @@ Matrix::~Matrix()
 {
 	for (myint i = 0; i < x; i++)
 		delete []arr[i];
-	delete []arr;
-	
-    //qDebug() << "Object deleted " << this;
-    //qDebug() << "\n";
+	delete []arr;	
 }
 
 
@@ -47,20 +40,6 @@ void Matrix::show()
     qDebug() << "\n";
 }
 
-//void Matrix::deleteKeyRows(myint x1, myint y1, myint *header)
-//{
-//	for (int i=0, mod=0; i<x1; i++)	{
-//		if (i==(header[mod]-mod+1))	{
-//			mod++;
-//		}
-//		for (int j=0; j<y1; j++)	{
-//			arr[i][j]=mainM[i+mod][j];
-//		}		
-//
-//	}
-//
-//
-//}
 
 void Matrix::fillBinarySequence()
 {
@@ -68,8 +47,6 @@ void Matrix::fillBinarySequence()
 		for (int j=0;j<y;j++)
 			arr[i][j]=1;
 	}
-
-
 	for (myint j=0, mod=0, ch=0; j<y; j++)	{
 		ch=(myint)pow(2,j+1);
 		mod=0;
@@ -88,7 +65,6 @@ void Matrix::fillWithNumber(myint num)
 		for (int j=0;j<y;j++)
 			arr[i][j]=num;
 	}
-
 }
 
 void Matrix::addIndexRowCol(myint **MainMcr_ptr)
@@ -99,8 +75,6 @@ void Matrix::addIndexRowCol(myint **MainMcr_ptr)
 
 	for (int j=1; j<y; j++)	
 		arr[0][j]=j-1;
-
-
 }
 
 myint Matrix::getX()
@@ -113,16 +87,6 @@ myint Matrix::getY()
 	return y;
 }
 
-void Matrix::deleteNullRows()
-{
-
-
-
-
-
-
-}
-
 
 void Matrix::deleteNullCols()
 {
@@ -132,7 +96,6 @@ void Matrix::deleteNullCols()
 			if (arr[i][j]==1)	break;
 			if (arr[i][j]==0 && i==x-1) mod_y++;
 		}
-
 
 	if (mod_y==0)	return;
 	//ЦИКЛ УДАЛЕНИЯ НУЛЕВЫХ СТОЛБЦОВ
@@ -164,18 +127,15 @@ void Matrix::deleteNullCols()
 	for (myint i = 0; i < x; i++)
 		arr[i] = new myint [new_y];	
 
-
 	for (int i = 0; i<x; i++)      
 		for (int j = 0; j<new_y; j++) arr[i][j]=arrTmp[i][j];
 
 	y=new_y;
-
 }
 
 
 Matrix& Matrix::operator=(Matrix& in)
-{
-		
+{	
 	for (int i=0; i<in.getX();i++)	
 		for (int j=0;j<in.getY();j++)
 			(*this)[i][j]=in[i][j];
@@ -185,16 +145,15 @@ Matrix& Matrix::operator=(Matrix& in)
 
 bool Matrix::operator==(Matrix& rh)
 {
-//    if (this->x != rh.x) return false;
+    if (this->x != rh.x) return false;
 
-//    int max = this->x;
+    int max = this->x;
 
-//    for (int i = 1; i < max; ++i) {
-//        for (int j = 1; j < max; ++j) {
-//            if ((*this)[i][j] != rh[i][j]) return false;
-//        }
-//    }
+    for (int i = 1; i < max; ++i) {
+        for (int j = 1; j < max; ++j) {
+            if ((*this)[i][j] != rh[i][j]) return false;
+        }
+    }
 
-      return false;
-
+    return true;
 }

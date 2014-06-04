@@ -9,65 +9,16 @@ void Storage::createMatrix()
             (*matrix)[i][j]=(*vMatrix)[i][j];
         }
     }
-
-//        for (int i = 0; i < vMatrix->size(); ++i) {
-//            QString str;
-//            for (int j = 0; j < vMatrix->size(); ++j) {
-
-//                int tempint = (*vMatrix)[i][j];
-//                QString temp;
-//                str += temp.setNum(tempint);
-
-//            }
-//            qDebug() << str;
-//        }
-
-//    int size=14;
-//    matrix = new Matrix(size, size);
-//    int arr[14][14] = {
-//            { 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12},
-//            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//            { 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//            { 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//            { 4, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//            { 5, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-//            { 6, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-//            { 7, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//            { 8, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//            { 9, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//            {10, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//            {11, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//            {12, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//        };
-
-//    for (int i = 0; i < size; ++i) {
-//        for (int j = 0; j < size; ++j) {
-//            (*matrix)[i][j] = arr[i][j];
-//        }
-//    }
-
 }
 
-Storage::Storage(QObject *parent):
-    QObject(parent)
+Storage::Storage(QWidget *parent):
+    QWidget(parent)
 
 {
     vMatrix = new QVector<QVector<int> > (1, QVector<int>(1, 0));
     attrTable = new QVector<QVector<QString> >;
     graphs = new QVector<QVector<Matrix *> *>;
     uniTable = new QVector<QVector<QString>>;
-
-//    for(int i = 0; i < 10; i++)
-//    {
-//        QVector<QString> vec;
-//        for(int j = 0; j < 2; j++)
-//            vec.push_back(QString::number(i));
-//        attrTable->push_back(vec);
-//    }
-
-
-
 }
 
 Storage::~Storage()
@@ -87,9 +38,7 @@ Storage::~Storage()
     }
 
     delete graphs;
-
     delete uniTable;
-
 }
 
 QVector<QVector<int> > *Storage::getVMatrix()
@@ -151,13 +100,13 @@ void Storage::startNormalization()
     graphs->clear();
 
     if (!checkingData()) {
-        qDebug() << "Checking is failed\n";
+        qDebug() << "Check is failed\n";
         return;
     }
 
     createMatrix();
     matrix->show();
-    Normalization norm(matrix, graphs);
+    Normalization norm(this, matrix, graphs);
     Iteration::resetIterationCounter();
 
     qDebug() << "*******************************";
@@ -171,7 +120,7 @@ void Storage::startNormalization()
 
 const QString &Storage::getOutputText(QString &rOutText) const
 {
-    rOutText="<h3 align= \"center\">Cхема отношений:</h3>";
+    rOutText="<h3 align= \"center\">Cхемы отношений:</h3>";
 
     for (int i = 0; i < graphs->size(); ++i) {
         for (int j = 0; j < graphs->at(i)->size(); ++j) {
@@ -205,11 +154,8 @@ const QString &Storage::getOutputText(QString &rOutText) const
             }
 
             rOutText += QString("%1 { <u>%2</u>, %3 }<br>").arg(textHeader).arg(textKeys).arg(textElem);
-
-
         }
     }
-
 
     return rOutText;
 }
@@ -232,8 +178,8 @@ QString Storage::getTextByNumber(int rNum) const
         if ( (*attrTable)[i][0] == tNum)
             return (*attrTable)[i][1];
     }
-    return "Error";
 
+    return "Error";
 }
 
 QVector<QVector<QString> > *Storage::getUniTable() const
@@ -281,8 +227,6 @@ const QString& Storage::getSuperKeyString()
            }
        }
    }
-
-
    superKeyString = QString(tr("Ключ универсального отношения: ")) + superKeyString;
 
    return superKeyString;

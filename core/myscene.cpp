@@ -7,7 +7,6 @@ MyScene::MyScene(Storage *rStorage, QObject *parent) :
 {
     storage = rStorage;
     this->setBackgroundBrush(QBrush(QColor(240, 248, 255, 255))); // colour AliceBlue
-
 }
 
 void MyScene::fillScene()
@@ -25,7 +24,6 @@ void MyScene::fillScene()
         qDebug() << "MyScene::fillScene graphs->at(0) is empty";
         return;
     }
-
     this->makeArrowTable();
 
     for (int i = 0; i < graphs->size(); ++i) {
@@ -45,42 +43,31 @@ void MyScene::fillScene()
                 textHeader += storage->getTextByNumber(number);
                 if (l != y-1)
                     textHeader += "_";
-
-
             }
             newTable->setWindowTitle(textHeader);
-
 
             for (int l = 1; l < y; ++l) {
                 int number = ( *graphs->at(i)->at(j) )[0][l];
                 textKeys = storage->getTextByNumber(number);
-//                if (l != y-1)
-//                    textKeys += " + ";
                 newItem = new QListWidgetItem(textKeys);
                 newItem->setBackground(keyItemsBackground);
                 newItem->setIcon(icon1);
                 newTable->addItem(newItem);
             }
 
-
-
             for (int k = 1; k < x; ++k) {
-
                 int number = ( *graphs->at(i)->at(j) )[k][0];
                 textElem = storage->getTextByNumber(number);
                 newItem = new QListWidgetItem(textElem);
                 newTable->addItem(newItem);
             }
 
-//            int count = newTable->count();
-//            newTable->setGeometry(40, 40, 200, 40+count*16);
             MyTable *newMyTable = new MyTable(newTable);
             list.append(newMyTable);
         }
     }
 
     // Adding tables on the scene
-
     int i = 0;
     for (int verticalMod = 0, maxRowCount = 2; i < list.size(); ++i) {
 
@@ -105,8 +92,6 @@ void MyScene::fillScene()
 
         list.at(i)->content->setGeometry(30+(i%3)*240, 40+verticalMod, 200, 45+count*15);
     }
-        //this->setSceneRect(0, 0, 731, (1+i/9)*411 );
-
 
     //Adding arrows on the scene and paint foreign items in table
     QIcon foreignIcon(":/pic/foreign.bmp");
@@ -131,7 +116,6 @@ void MyScene::fillScene()
     }
     this->clearFocus();
     this->clearSelection();
-
 }
 
 void MyScene::makeArrowTable()
@@ -151,7 +135,6 @@ void MyScene::makeArrowTable()
                 for (int m = 0; m < graphs->size(); ++m) {
                     for (int n = 0; n < graphs->at(m)->size(); ++n) {
 
-                        //int innerMaxX = graphs->at(m)->at(n)->getX();
                         int innerMaxY = graphs->at(m)->at(n)->getY();
 
                         for (int k = 1; k < innerMaxY; ++k) {
@@ -180,9 +163,9 @@ void MyScene::makeArrowTable()
         }
     }
 
-//////////////////////////////////////////////////
-/// key to key relation arrows
-//////////////////////////////////////////////////
+    //-------------------------------------------------------------------------
+    //-------- Составление записей таблицы Arrow для связей между ключами------
+    //-------------------------------------------------------------------------
 
     struct KeyAttrElem
     {
@@ -217,10 +200,6 @@ void MyScene::makeArrowTable()
     qSort(keyAttributes.begin(), keyAttributes.end(), //Sort with lambda functor
           [](const KeyAttrElem& a, const KeyAttrElem& b){return a.set.size() > b.set.size(); } );
 
-//    foreach (KeyAttrElem elem, keyAttributes) {
-//        qDebug() << elem.number << elem.set.toList();
-//    }
-
     QVector<QVector<int> > keyAttrTemp;
 
     int i = 0;
@@ -243,17 +222,8 @@ void MyScene::makeArrowTable()
         (*keyCon)[ vec[1]+1 ][ vec[0]+1 ] = 1;
     }
 
-    //keyCon->show();
     QVector<QVector<Matrix*>*> *out = new QVector<QVector<Matrix *> *>;
-    Normalization norm(keyCon, out);
-
-//    qDebug() << "*******test************************";
-//    for (int i = 0; i < out->size(); ++i) {
-//        for (int j = 0; j < out->at(i)->size(); ++j) {
-//            out->at(i)->at(j)->show();
-//        }
-//    }
-//    qDebug() << "*******************************";
+    Normalization norm(0, keyCon, out);
 
     keyAttrTemp.clear();
     for (int i = 0; i < out->size(); ++i) {
@@ -270,21 +240,6 @@ void MyScene::makeArrowTable()
             }
         }
     }
-
-
-
-//    qDebug() << "ketAttrTemp";
-//    QString str;
-//    for (int i = 0; i < keyAttrTemp.size(); i++)	{
-//        for (int j = 0; j < keyAttrTemp.at(i).size(); j++)   {
-//            QString temp;
-//            str += temp.setNum(keyAttrTemp[i][j]) += " ";
-//        }
-//        qDebug() << str;
-//        str.clear();
-//    }
-//    qDebug() << "\n";
-
 
     for (int i = 0; i < keyAttrTemp.size(); ++i) {
         int matrixStart = keyAttrTemp[i][0];
@@ -310,17 +265,4 @@ void MyScene::makeArrowTable()
     }
 
     delete out;
-
-//    qDebug() << "ArrowTable";
-//    QString str;
-//    for (int i = 0; i < arrowTable.size(); i++)	{
-//        for (int j = 0; j < arrowTable.at(i).size(); j++)   {
-//            QString temp;
-//            str += temp.setNum(arrowTable[i][j]) += " ";
-//        }
-//        qDebug() << str;
-//        str.clear();
-//    }
-//    qDebug() << "\n";
-
 }

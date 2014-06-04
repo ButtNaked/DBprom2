@@ -116,13 +116,6 @@ void Connection::on_addConButton_clicked()
         }
     }
 
-//    for (int i = 0; i < 2; ++i) {
-//        QString temp;
-//        for (int j = 0; j < 4; ++j) {
-//            temp += difficultConnection[i][j];
-//        }
-//        qDebug() << temp << " ";
-//    }
     //Проверка на совпадение атрибутов
     for (int i = 0; i < 2; ++i) {
         for (int j = 0; j < 4; ++j) {
@@ -139,25 +132,23 @@ void Connection::on_addConButton_clicked()
             }
         }
     }
+
     //Вызов функции заполнения для каждой пары атрибутов.
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
             if ( difficultConnection[0][i] != empty &&  difficultConnection[1][j] != empty )  {
               addSimpleConnection(difficultConnection[0][i], difficultConnection[1][j]);
-//              qDebug() << difficultConnection[0][i] << difficultConnection[1][j];
-
             }
         }
     }
+
     //Заполнение TableWidget
     for (int i = 0; i < 4; ++i) {
         if (difficultConnection[1][i] != empty ) {
             for (int j = 0; j < tw->rowCount(); ++j) {
                     if ( tw->item(j, 1)->data(Qt::UserRole).value<int>() == difficultConnection[1][i].toInt() )   {
                     tw->removeRow(j);
-                    //qDebug() << "removed row: " << j;
                 }
-
             }
 
             QString strM;

@@ -66,8 +66,11 @@ private slots:
 
     void on_actionNew_data_base_scheme_triggered();
 
+    void loopedMatrix();
+
 private:
-    const QString version = "0.85";
+    bool loopedMatirxFlag = false;
+    const QString version = "1.00";
     Ui::MainWindow *ui;
     Storage *storage;
     MyScene *scene;

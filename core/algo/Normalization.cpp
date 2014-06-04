@@ -1,7 +1,7 @@
 #include "core/algo/Normalization.h"
+#include <QMessageBox>
 
 myint Iteration::iteration_counter=0;
-
 
 Iteration::Iteration(Matrix *pInMainM):
     pMainM(pInMainM),
@@ -20,7 +20,6 @@ Iteration::Iteration(Matrix *pInMainM):
     secondNF();
     thirdNF();
     construction();
-
 }
 
 Iteration::~Iteration()
@@ -32,12 +31,10 @@ Iteration::~Iteration()
     delete pThirdM;
 
     delete []headerM;
-
 }
 
 void Iteration::showHeaderM()
 {
-    // Вывод на экран хедера
     cout << "\n";
     for (int i=0;i<headerM_x;i++)
         cout << headerM[i] << " ";
@@ -55,11 +52,9 @@ QVector<Matrix*>* Iteration::getGraphs()
 Matrix* Iteration::getRemains()
 {
     if (arrayIsNull)
-        return nullptr; //nullptr
+        return nullptr;
 
     return pOutM;
-
-
 }
 
 bool Iteration::getArrayIsNull()
@@ -69,15 +64,17 @@ bool Iteration::getArrayIsNull()
 
 bool Iteration::isLooped()
 {
-    cout << "looped = " << looped;
     return looped;
 }
 
-
-Normalization::Normalization(Matrix* in, QVector<QVector<Matrix *> *> *rGraphs):
+Normalization::Normalization(QWidget *parent, Matrix* in, QVector<QVector<Matrix *> *> *rGraphs):
+    QWidget(parent),
     pInMain(in)
 {
-	cout << "OKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOK" << "\n";
+    if (parent != nullptr)
+        connect(this, SIGNAL(loopedMatrix()), parent, SIGNAL(loopedMatrix()));
+
+    cout << "OKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOK" << "\n";
 
     Iteration *b;
     Matrix* pRes=pInMain;
@@ -87,17 +84,18 @@ Normalization::Normalization(Matrix* in, QVector<QVector<Matrix *> *> *rGraphs):
         delete pRes;
         rGraphs->append( b->getGraphs());
         if (b->getArrayIsNull() || b->isLooped())	{
+            if (b->isLooped())  {
+                QMessageBox::warning(this, tr("Внимание!"),
+                                     tr("Введенные связи образуют кольцо, нормализация не возможна."));
+                emit loopedMatrix();
+            }
             delete b;
-              return;
+            return;
         }
         pRes=b->getRemains();
         delete b;
-
     }
-
-
 }
-
 
 Normalization::~Normalization()
 {

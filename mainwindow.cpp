@@ -17,11 +17,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->masterKeyLabel->setText("Введите связи между атрибутами для отображения ключа универсального отношения.");
 
-    //QSettings *settings = new QSettings("settings.conf",QSettings::IniFormat, this);
     this->show();
 
     NewDialog *wd = new NewDialog(this, this, storage);
     wd->show();
+
+    connect(storage, SIGNAL(loopedMatrix()), this, SLOT(loopedMatrix()));
 }
 
 MainWindow::~MainWindow()
@@ -74,8 +75,11 @@ void MainWindow::on_addConButton_clicked()
 
 void MainWindow::on_normButton_clicked()
 {
+    loopedMatirxFlag = false;
     storage->startNormalization();
-    this->showOutput();
+    if (loopedMatirxFlag) return;
+    else
+        this->showOutput();
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -103,7 +107,7 @@ void MainWindow::on_actionOpen_File_triggered()
     QVector<QVector<QString> > outUniTable;
     QString outdbName;
     in >> outVersion >> outAttrTable >> outVMatrix >> outUniTable >> outdbName;
-    if (outVersion != version) {
+    if (outVersion != version && outVersion != "0.85") {
         qDebug() << "Разные версии";
         return;
     }
@@ -160,4 +164,9 @@ void MainWindow::on_actionNew_data_base_scheme_triggered()
 {
     NewDialog *wd = new NewDialog(this, this, storage);
     wd->show();
+}
+
+void MainWindow::loopedMatrix()
+{
+    loopedMatirxFlag = true;
 }

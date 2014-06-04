@@ -4,7 +4,6 @@
 #include <QObject>
 #include <misc/Matrix.h>
 #include <core/algo/Normalization.h>
-#include <misc/node.h>
 #include <QDebug>
 #include <QGraphicsItem>
 #include <QFont>
@@ -17,7 +16,7 @@
 
 
 
-class Storage : public QObject
+class Storage : public QWidget
 {
     Q_OBJECT
 
@@ -35,7 +34,7 @@ private:
     bool checkingData();
 
 public:
-    Storage(QObject *parent = 0);
+    Storage(QWidget *parent = 0);
     ~Storage();
     QVector<QVector<int> > *getVMatrix();
     Matrix *getMatrix();
@@ -57,6 +56,9 @@ public:
     void setdbName(const QString &rdbName);
     const QString& getdbName() const;
     void clear();
+
+signals:
+    void loopedMatrix();
 };
 
 

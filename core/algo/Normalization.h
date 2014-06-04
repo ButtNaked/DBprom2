@@ -2,10 +2,11 @@
 
 #include "misc/Matrix.h"
 #include <QVector>
+#include <QWidget>
 
 #define cout qDebug()
 
-class Normalization : public QObject
+class Normalization : public QWidget
 {
     Q_OBJECT
 
@@ -14,9 +15,10 @@ private:
     QVector<QVector<Matrix *> *> *graphs;
 
 public:
-    Normalization(Matrix*, QVector<QVector<Matrix *> *> *rGraphs);
+    Normalization(QWidget *parent, Matrix*, QVector<QVector<Matrix *> *> *rGraphs);
     ~Normalization();
 signals:
+    void loopedMatrix();
 
 };
 
@@ -30,11 +32,9 @@ class Iteration
     myint secondM_x, secondM_y; Matrix *pSecondM;
     myint secondM2_x, secondM2_y; Matrix *pSecondM2;
     myint thirdM_x, thirdM_y; Matrix *pThirdM;
-
     myint outM_x, outM_y; Matrix *pOutM;
     QVector<Matrix *> *vRes;
-
-    bool arrayIsNull;
+    bool arrayIsNull = 0;
     bool looped;
 
 public:
@@ -46,7 +46,6 @@ public:
     void construction();
     void preparing();
     static void resetIterationCounter();
-
     QVector<Matrix *> *getGraphs();
     Matrix* getRemains();
     bool getArrayIsNull();

@@ -20,7 +20,6 @@ SOURCES += main.cpp \
     subwindows/attribute.cpp \
     subwindows/connection.cpp \
     misc/Matrix.cpp \
-    misc/node.cpp \
     subwindows/universalrelationtable.cpp \
     core/myscene.cpp \
     core/sceneElem/arrow.cpp \
@@ -34,7 +33,6 @@ HEADERS  += mainwindow.h \
     subwindows/attribute.h \
     subwindows/connection.h \
     misc/Matrix.h \
-    misc/node.h \
     subwindows/universalrelationtable.h \
     core/myscene.h \
     core/sceneElem/arrow.h \

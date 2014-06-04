@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <QDebug>
 
 typedef int myint; // здесь был unsigned int
@@ -38,7 +37,7 @@ public:
     }
 
 	Matrix& operator=(Matrix&);
-	Matrix(myint x1, myint y1);
+    Matrix(myint rX, myint rY);
 	~Matrix();
 	myint** getPtr();
 	void show();
