@@ -1,15 +1,16 @@
 #ifndef UNIVERSALRELATIONTABLE_H
 #define UNIVERSALRELATIONTABLE_H
 
-#include <QMainWindow>
 #include <core/storage.h>
+
+#include <QMainWindow>
 #include <QTableWidget>
 
 // Structure to keep rules based on attributes realation
 struct Rule
 {
-    QVector<int> keys;  // key attributes
-    int attr;           // depend attribute
+    QVector<int> keys;
+    int attr;
 };
 
 namespace Ui {
@@ -33,13 +34,14 @@ private:
     QVector<QVector<QString> > *attrTable;
     bool isAllTuplesValid;
 
-    void fillTableWidget();     //fill table widget with items
-    void tuplesValidation();    //create set of rules for future tuples validation
-    void checkRule(Rule& rRule);//check rules and paint items, if check dont passed
+    void fillTableWidget();
+    void tuplesValidation();
+    void checkRule(Rule& rRule);
 
 private slots:
-    void updateTable(QTableWidgetItem* rItem);// update tableWidget and uniTable
-    void on_actionCheck_triggered();          //initiate tuples validation process
+    void updateTable(QTableWidgetItem* rItem);
+    void on_actionCheck_triggered();
+    void on_actionCheckText_triggered();
 };
 
 #endif // UNIVERSALRELATIONTABLE_H

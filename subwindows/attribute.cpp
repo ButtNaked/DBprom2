@@ -108,7 +108,7 @@ void Attribute::on_delAttrButton_clicked()
         return;
     }
 
-    auto result = QMessageBox::question(this, "", tr("Вы уверены что хотите удалить выбранный атрибут?"));
+    auto result = QMessageBox::question(this, "", tr("Удалить выбранный атрибут?"));
     if ( result == QMessageBox::No) return;
 
     QListWidgetItem *delItem = lw->takeItem(lw->row(lw->currentItem()));

@@ -109,6 +109,7 @@ void MainWindow::on_actionOpen_File_triggered()
     in >> outVersion >> outAttrTable >> outVMatrix >> outUniTable >> outdbName;
     if (outVersion != version && outVersion != "0.85") {
         qDebug() << "Разные версии";
+        QMessageBox::information(this, tr("Ошибка"), tr("Выбран некорректный файл."));
         return;
     }
 
@@ -162,6 +163,8 @@ void MainWindow::on_action_triggered()
 
 void MainWindow::on_actionNew_data_base_scheme_triggered()
 {
+    auto result = QMessageBox::question(this, "Внимание", tr("Все не сохраненные данные будут потеряны. Продолжить?"));
+    if ( result == QMessageBox::No) return;
     NewDialog *wd = new NewDialog(this, this, storage);
     wd->show();
 }

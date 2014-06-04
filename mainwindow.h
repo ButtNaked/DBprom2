@@ -1,7 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-
 #include <core/storage.h>
 #include <subwindows/attribute.h>
 #include <subwindows/connection.h>
@@ -19,7 +18,6 @@
 #include <QDataStream>
 #include <QFileDialog>
 #include <QSettings>
-
 
 namespace Ui {
 class MainWindow;

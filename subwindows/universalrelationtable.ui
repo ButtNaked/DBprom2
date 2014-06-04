@@ -37,21 +37,39 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionCheck"/>
+   <addaction name="actionCheckText"/>
   </widget>
   <action name="actionCheck">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset>
      <normalon>:/pic/red_dot.png</normalon>
     </iconset>
    </property>
    <property name="text">
-    <string>Проверить корректность введеных кортежей</string>
+    <string>Проверка корректности УО</string>
+   </property>
+   <property name="toolTip">
+    <string>Проверка корректности введенного универсального отношения</string>
    </property>
    <property name="shortcutContext">
     <enum>Qt::WindowShortcut</enum>
    </property>
    <property name="menuRole">
     <enum>QAction::TextHeuristicRole</enum>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
+  </action>
+  <action name="actionCheckText">
+   <property name="text">
+    <string>Проверка корректности УО</string>
+   </property>
+   <property name="toolTip">
+    <string>Проверка корректности введенного универсального отношения</string>
    </property>
   </action>
  </widget>

@@ -1,8 +1,9 @@
 #ifndef ATTRIBUTE_H
 #define ATTRIBUTE_H
 
-#include <QDialog>
 #include <core/storage.h>
+
+#include <QDialog>
 #include <QMessageBox>
 #include <QRegExp>
 

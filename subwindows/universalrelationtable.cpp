@@ -20,6 +20,7 @@ UniversalRelationTable::UniversalRelationTable(QWidget *parent, Storage *rStorag
     attrTable = storage->getAttrTable();
 
     this->fillTableWidget();
+    wt->resizeColumnsToContents();
 
     connect (ui->tableWidget,SIGNAL(itemChanged(QTableWidgetItem*)),this,SLOT(updateTable(QTableWidgetItem*)));
 }
@@ -101,8 +102,8 @@ void UniversalRelationTable::tuplesValidation()
     if (isAllTuplesValid) {
         QMessageBox::information(this, tr("Проверка корректности кортежей"), tr("Все кортежи корректны."));
     }
-    else QMessageBox::information(this, tr("Проверка корректности кортежей"),
-                                  tr("Найдены некорректные кортежи. Красным выделен несовпадающий атрибут кортежа, желтым - его ключ."));
+    else QMessageBox::information(this, tr("Проверка корректности универсального отношения"),
+                                  tr("Универсальное отношение некорректно. Проверьте правильность данных в таблице и/или корректность связей между атрибутами."));
 
 }
 
@@ -187,6 +188,8 @@ void UniversalRelationTable::updateTable(QTableWidgetItem* rItem)
         uniTable->append(vector);
     }
 
+    wt->resizeColumnsToContents();
+
 //    qDebug() << "UniTable";
 //    for (int i = 0; i < uniTable->size(); ++i) {
 //        QString str;
@@ -209,4 +212,9 @@ void UniversalRelationTable::on_actionCheck_triggered()
     }
 
     this->tuplesValidation();
+}
+
+void UniversalRelationTable::on_actionCheckText_triggered()
+{
+    on_actionCheck_triggered();
 }

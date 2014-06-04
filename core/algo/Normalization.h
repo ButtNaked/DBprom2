@@ -1,6 +1,7 @@
 #pragma once
 
 #include "misc/Matrix.h"
+
 #include <QVector>
 #include <QWidget>
 

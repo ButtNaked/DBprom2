@@ -257,11 +257,15 @@ bool Storage::checkingData()
 {
     if (attrTable->isEmpty() || vMatrix->isEmpty()) {
         qDebug() << "Storage::checkingData, Data is not valid.";
+        QMessageBox::warning(this, tr("Ошибка"),
+                             tr("Файл пуст. Введите атрибуты и установите связи между ними."));
         return false;
     }
 
     if (vMatrix->size() <= 2)   {
         qDebug() << "Матрица пуста или состоит из одного атрибута.";
+        QMessageBox::warning(this, tr("Ошибка"),
+                             tr("Матрица пуста или состоит из одного атрибута."));
         return false;
     }
 
@@ -274,6 +278,8 @@ bool Storage::checkingData()
     }
 
     if (connectionNotExist) {
+        QMessageBox::warning(this, tr("Ошибка"),
+                             tr("Не установленны связи между атрибутами базы данных."));
         return false;
     }
 

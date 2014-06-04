@@ -1,9 +1,10 @@
 #ifndef STORAGE_H
 #define STORAGE_H
 
-#include <QObject>
 #include <misc/Matrix.h>
 #include <core/algo/Normalization.h>
+
+#include <QObject>
 #include <QDebug>
 #include <QGraphicsItem>
 #include <QFont>
@@ -12,9 +13,7 @@
 #include <QWidget>
 #include <QListWidget>
 #include <QByteArray>
-
-
-
+#include <QMessageBox>
 
 class Storage : public QWidget
 {

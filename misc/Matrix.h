@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-typedef int myint; // здесь был unsigned int
+typedef int myint;
 
 class Matrix
 {

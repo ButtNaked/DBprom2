@@ -31,8 +31,8 @@ Connection::Connection(QWidget *parent, Storage *rStorage) :
     ptrComboBoxes.append(vecS);
 
     tw->setColumnCount(2);
-    tw->setColumnWidth(0, 306);
-    tw->setColumnWidth(1, 153);
+    tw->setColumnWidth(0, 297);
+    tw->setColumnWidth(1, 147);
     tw->setRowCount(0);
     tw->setHorizontalHeaderLabels(QStringList() << tr("Основной") << tr("Зависимый"));
 
@@ -181,7 +181,6 @@ void Connection::on_addConButton_clicked()
     }
 
     tw->resizeRowsToContents();
-    //tw->scrollToBottom();
     tw->sortByColumn(1, Qt::AscendingOrder);
 
     storage->setNormalizeChanged();
@@ -194,6 +193,10 @@ void Connection::on_deleteConButton_clicked()
         QMessageBox::information(this, "", tr("Для удаления сначала выберите нужную связь."));
         return;
     }
+
+    auto result = QMessageBox::question(this, "", tr("Удалить выбранную связь?"));
+    if ( result == QMessageBox::No) return;
+
     QTableWidgetItem *itemM = tw->takeItem(curRow,0);
     QTableWidgetItem *itemS = tw->takeItem(curRow,1);
     tw->removeRow(curRow);
@@ -205,14 +208,6 @@ void Connection::on_deleteConButton_clicked()
     }
 
     storage->setNormalizeChanged();
-
-//    for (int i = 0; i < vMatrix->size(); ++i) {
-//        QString str;
-//        for (int j = 0; j < vMatrix->size(); ++j) {
-//            str += QString::number( (*vMatrix)[i][j]);
-//        }
-//        qDebug() << str;
-//    }
 }
 
 void Connection::on_cancelButton_clicked()
@@ -227,19 +222,17 @@ void Connection::addSimpleConnection(const QString& currentNum, const QString& c
     for (int i = 0; i < attrTable->size(); ++i) {
         if ( currentNum == (*attrTable)[i][0] ) {
             strM = (*attrTable)[i][1];
-            //qDebug()<<"strM"<< strM;
             break;
         }
     }
     for (int i = 0; i < attrTable->size(); ++i) {
         if ( currentNum2 == (*attrTable)[i][0] ) {
             strS = (*attrTable)[i][1];
-            //qDebug()<<"strS"<< strS;
             break;
         }
     }
-    //Добавление связей в vMatrix
 
+    //Добавление связей в vMatrix
     int numberX = -1, numberY = -1;
 
     for (int i = 0; i < attrTable->size(); ++i) {
@@ -249,7 +242,6 @@ void Connection::addSimpleConnection(const QString& currentNum, const QString& c
         if (strS == (*attrTable)[i][1])   {
             numberX=( (*attrTable)[i][0]).toInt();
         }
-
     }
 
     int coordX = -1;
@@ -285,5 +277,4 @@ void Connection::on_resetComBoxesButton_clicked()
             else    ptrComboBoxes[i][j]->setCurrentIndex(0);
         }
     }
-
 }

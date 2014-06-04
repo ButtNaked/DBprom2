@@ -51,7 +51,7 @@
   <widget class="QPushButton" name="addAttrButton">
    <property name="geometry">
     <rect>
-     <x>290</x>
+     <x>270</x>
      <y>300</y>
      <width>81</width>
      <height>21</height>
@@ -111,7 +111,6 @@
    </property>
   </widget>
   <zorder>pushButton_2</zorder>
-  <zorder>listWidget</zorder>
   <zorder>lineEdit</zorder>
   <zorder>addAttrButton</zorder>
   <zorder>delAttrButton</zorder>

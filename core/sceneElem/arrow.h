@@ -1,9 +1,9 @@
 #ifndef ARROW_H
 #define ARROW_H
 
-#include <QGraphicsLineItem>
-
 #include "mytable.h"
+
+#include <QGraphicsLineItem>
 
 QT_BEGIN_NAMESPACE
 class QGraphicsPolygonItem;

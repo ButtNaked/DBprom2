@@ -85,8 +85,8 @@ Normalization::Normalization(QWidget *parent, Matrix* in, QVector<QVector<Matrix
         rGraphs->append( b->getGraphs());
         if (b->getArrayIsNull() || b->isLooped())	{
             if (b->isLooped())  {
-                QMessageBox::warning(this, tr("Внимание!"),
-                                     tr("Введенные связи образуют кольцо, нормализация не возможна."));
+                QMessageBox::warning(this, tr("Ошибка"),
+                                     tr("Введенные связи образуют кольцо, нормализация не возможна. Проверьте корректность введеных данных."));
                 emit loopedMatrix();
             }
             delete b;
