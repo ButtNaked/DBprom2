@@ -219,6 +219,22 @@
     <string>Сброс</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="uoButton">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>550</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Показать ключ универсального отношения</string>
+   </property>
+   <property name="text">
+    <string>Ключ УО</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

@@ -29,6 +29,8 @@ private slots:
 
     void on_resetComBoxesButton_clicked();
 
+    void on_uoButton_clicked();
+
 private:
     Ui::Connection *ui;
     Storage *storage;

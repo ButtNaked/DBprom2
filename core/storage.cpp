@@ -204,7 +204,7 @@ void Storage::setNormalizeUpToDate()
         upToDate = true;
 }
 
-const QString& Storage::getSuperKeyString()
+const QString Storage::getSuperKeyString()
 {
     if (upToDate) return superKeyString;
 
@@ -227,6 +227,9 @@ const QString& Storage::getSuperKeyString()
            }
        }
    }
+
+   if (superKeyString.isEmpty()) return "Введите связи между атрибутами для отображения ключа универсального отношения.";
+
    superKeyString = QString(tr("Ключ универсального отношения: ")) + superKeyString;
 
    return superKeyString;

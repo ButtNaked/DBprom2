@@ -278,3 +278,8 @@ void Connection::on_resetComBoxesButton_clicked()
         }
     }
 }
+
+void Connection::on_uoButton_clicked()
+{
+    QMessageBox::information(this, tr("Ключ универсального отношения"), storage->getSuperKeyString());
+}

@@ -109,7 +109,7 @@ void MainWindow::on_actionOpen_File_triggered()
     in >> outVersion >> outAttrTable >> outVMatrix >> outUniTable >> outdbName;
     if (outVersion != version && outVersion != "0.85") {
         qDebug() << "Разные версии";
-        QMessageBox::information(this, tr("Ошибка"), tr("Выбран некорректный файл."));
+        //QMessageBox::information(this, tr("Ошибка"), tr("Выбран некорректный файл."));
         return;
     }
 

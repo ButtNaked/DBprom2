@@ -51,7 +51,7 @@ public:
     bool isNormalizeUpdated() const;
     void setNormalizeChanged();
     void setNormalizeUpToDate();
-    const QString &getSuperKeyString();
+    const QString getSuperKeyString();
     void setdbName(const QString &rdbName);
     const QString& getdbName() const;
     void clear();
